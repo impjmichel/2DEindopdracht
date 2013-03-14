@@ -9,27 +9,28 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class MenuPanel extends JPanel implements ActionListener
+import view.world.GameLevel;
+
+public class MenuPanel extends GameLevel implements ActionListener
 {
 	private ArrayList<Shape> shapes;
 	private static String[] s = {"Start","Controls","Exit"};
 	private GameFrame frame;
+	private int select, maxSelect;
 	
 	public MenuPanel(GameFrame frame)
 	{
 		this.frame = frame;
 		setPreferredSize(new Dimension(900,600));
+		select = 0;
+		maxSelect = 3;
 		shapes = new ArrayList<Shape>();
 		for(int i = 0; i < 3; i++)
 		{
@@ -52,7 +53,7 @@ public class MenuPanel extends JPanel implements ActionListener
 		FontRenderContext frc = g2.getFontRenderContext();
 		for(int id = 0; id < s.length; id++)
 		{
-			if(frame.getSelect() == id)
+			if(select == id)
 			{
 				GradientPaint p = new GradientPaint(0,0,Color.GREEN,300,0,Color.BLUE);
 				g2.setPaint(p);
@@ -76,15 +77,26 @@ public class MenuPanel extends JPanel implements ActionListener
 
 	public void up()
 	{
-		
+		select = (select+maxSelect-1)%maxSelect;
 	}
 	public void down()
 	{
-		
+		select = (select+1)%maxSelect;
 	}
 	public void enter()
 	{
-		
+		switch(select)
+		{
+			case 0:
+				System.out.println("start game!!");
+				break;
+			case 1:
+				System.out.println("controls are easy, arrow keys + enter");
+				break;
+			case 2:
+				System.exit(0);
+				break;
+		}
 	}
 	
 	@Override
@@ -96,5 +108,15 @@ public class MenuPanel extends JPanel implements ActionListener
 	public void update()
 	{
 		repaint();
+	}
+
+	@Override
+	public void left()
+	{
+	}
+
+	@Override
+	public void right()
+	{
 	}
 }
