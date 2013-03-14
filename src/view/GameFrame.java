@@ -22,13 +22,14 @@ public class GameFrame extends JFrame implements KeyListener
 	private GameLevel content;
 	private LoadScreen loading;
 	private ArrayList<ArrayList<GameLevel>> levels;
-	int level, map;
+	private int level, map;
+	private int defaultKeys;
 
 	public GameFrame()
 	{
 		super("Gravity Control");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+		defaultKeys = 1;
 		level = 0;
 		map = 0;
 		loading = new LoadScreen(this);
@@ -42,19 +43,50 @@ public class GameFrame extends JFrame implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent ke)
 	{
-		if(ke.getKeyCode() == KeyEvent.VK_DOWN)
-			content.down();
-		if(ke.getKeyCode() == KeyEvent.VK_UP)
-			content.up();
-		
+		if(defaultKeys==1)
+		{
+			if(ke.getKeyCode() == KeyEvent.VK_DOWN)
+				content.down();
+			if(ke.getKeyCode() == KeyEvent.VK_UP)
+				content.up();
+			if(ke.getKeyCode() == KeyEvent.VK_LEFT)
+				content.left();
+			if(ke.getKeyCode() == KeyEvent.VK_RIGHT)
+				content.right();
+		}
+		else
+		{
+			if(ke.getKeyCode() == KeyEvent.VK_S)
+				content.down();
+			if(ke.getKeyCode() == KeyEvent.VK_W)
+				content.up();
+			if(ke.getKeyCode() == KeyEvent.VK_A)
+				content.left();
+			if(ke.getKeyCode() == KeyEvent.VK_D)
+				content.right();	
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent ke)
 	{
-		if(ke.getKeyCode() == KeyEvent.VK_ENTER)
+		if(defaultKeys==1)
 		{
-			content.enter();
+			if(ke.getKeyCode() == KeyEvent.VK_SPACE)
+			{
+				content.enter();
+			}
+		}
+		else
+		{
+			if(ke.getKeyCode() == KeyEvent.VK_ENTER)
+			{
+				content.enter();
+			}
+		}
+		if(ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+		{
+			content.escape();
 		}
 	}
 
@@ -71,6 +103,7 @@ public class GameFrame extends JFrame implements KeyListener
 		setContentPane(new JPanel());
 		content = levels.get(0).get(0);
 		setContentPane(content);
+		content.start();
 		validate();
 		repaint();
 	}
@@ -78,24 +111,54 @@ public class GameFrame extends JFrame implements KeyListener
 	public void nextMap()
 	{
 		map++;
+		content.stop();
 		content = levels.get(level).get(map);
+		setContentPane(content);
+		content.start();
+		validate();
+		repaint();
 	}
 	public void previousMap()
 	{
 		map--;
+		content.stop();
 		content = levels.get(level).get(map);
+		setContentPane(content);
+		content.start();
+		validate();
+		repaint();
 	}
 	public void nextLevel()
 	{
 		level++;
-		content = levels.get(level).get(0);
+		content.stop();
+		content = levels.get(level).get(map);
+		setContentPane(content);
+		content.start();
+		validate();
+		repaint();
 	}
 	public void previousLevel()
 	{
 		level--;
-		content = levels.get(level).get(0);
+		content.stop();
+		content = levels.get(level).get(map);
+		setContentPane(content);
+		content.start();
+		validate();
+		repaint();
 	}
 	
+	public void setDefaultKeys(int defaultKeys)
+	{
+		this.defaultKeys = defaultKeys;
+	}
+
+	public int isDefaultKeys()
+	{
+		return defaultKeys;
+	}
+
 	private class LoadScreen extends GameLevel implements ActionListener
 	{
 		private double direction;
@@ -106,7 +169,7 @@ public class GameFrame extends JFrame implements KeyListener
 			setPreferredSize(new Dimension(900,600));
 			direction = 0;
 			timer = new Timer(1000/60, this);
-			timer.start();
+			this.start();
 		}
 		
 		public void paintComponent(Graphics g)
@@ -145,6 +208,10 @@ public class GameFrame extends JFrame implements KeyListener
 		public void enter()
 		{
 		}
+		public void escape()
+		{
+			System.exit(0);
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0)
@@ -155,6 +222,10 @@ public class GameFrame extends JFrame implements KeyListener
 		public void stop()
 		{
 			timer.stop();
+		}
+		public void start()
+		{
+			timer.start();
 		}
 		public void update()
 		{

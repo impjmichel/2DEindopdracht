@@ -29,7 +29,7 @@ public class GameSimulator implements ActionListener
 		menu.add(new MenuPanel(frame));
 		menu.add(new ControlPanel(frame));
 		levels.add(menu);
-		timer = new Timer(2000, this);
+		timer = new Timer(500, this);
 		timer.start();
 	}
 

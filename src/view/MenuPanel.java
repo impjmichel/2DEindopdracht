@@ -24,6 +24,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 	private static String[] s = {"Start","Controls","Exit"};
 	private GameFrame frame;
 	private int select, maxSelect;
+	private Timer timer;
 	
 	public MenuPanel(GameFrame frame)
 	{
@@ -38,8 +39,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 			shapes.add(option);
 		}
 		
-		Timer timer = new Timer(1000/60, this);
-		timer.start();
+		timer = new Timer(1000/60, this);
 	}
 	
 	public void paintComponent(Graphics g)
@@ -91,14 +91,17 @@ public class MenuPanel extends GameLevel implements ActionListener
 				System.out.println("start game!!");
 				break;
 			case 1:
-				System.out.println("controls are easy, arrow keys + enter");
+				frame.nextMap();
 				break;
 			case 2:
 				System.exit(0);
 				break;
 		}
 	}
-	
+	public void escape()
+	{
+		System.exit(0);
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
@@ -118,5 +121,14 @@ public class MenuPanel extends GameLevel implements ActionListener
 	@Override
 	public void right()
 	{
+	}
+	
+	public void start()
+	{
+		timer.start();
+	}
+	public void stop()
+	{
+		timer.stop();
 	}
 }
