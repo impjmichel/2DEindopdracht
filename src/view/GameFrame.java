@@ -16,23 +16,23 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import view.world.GameLevel;
+import view.world.GameWorld;
 
 public class GameFrame extends JFrame implements KeyListener
 {
+	private GameWorld world;
 	private GameLevel content;
 	private LoadScreen loading;
 	private ArrayList<ArrayList<GameLevel>> levels;
-	private int level, map;
 	private int defaultKeys;
 
-	public GameFrame()
+	public GameFrame(GameWorld world)
 	{
 		super("Gravity Control");
+		this.world = world;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		defaultKeys = 1;
-		level = 0;
-		map = 0;
-		loading = new LoadScreen(this);
+		loading = new LoadScreen(this, world);
 		content = loading;
 		setFocusable(true);
 		addKeyListener(this);
@@ -108,41 +108,10 @@ public class GameFrame extends JFrame implements KeyListener
 		repaint();
 	}
 	
-	public void nextMap()
+	public void loadMap(GameLevel map)
 	{
-		map++;
 		content.stop();
-		content = levels.get(level).get(map);
-		setContentPane(content);
-		content.start();
-		validate();
-		repaint();
-	}
-	public void previousMap()
-	{
-		map--;
-		content.stop();
-		content = levels.get(level).get(map);
-		setContentPane(content);
-		content.start();
-		validate();
-		repaint();
-	}
-	public void nextLevel()
-	{
-		level++;
-		content.stop();
-		content = levels.get(level).get(map);
-		setContentPane(content);
-		content.start();
-		validate();
-		repaint();
-	}
-	public void previousLevel()
-	{
-		level--;
-		content.stop();
-		content = levels.get(level).get(map);
+		content = map;
 		setContentPane(content);
 		content.start();
 		validate();
@@ -164,8 +133,9 @@ public class GameFrame extends JFrame implements KeyListener
 		private double direction;
 		private Timer timer;
 		
-		public LoadScreen(GameFrame gframe)
+		public LoadScreen(GameFrame gframe,GameWorld world)
 		{
+			super(world);
 			setPreferredSize(new Dimension(900,600));
 			direction = 0;
 			timer = new Timer(1000/60, this);

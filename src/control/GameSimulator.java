@@ -10,26 +10,25 @@ import view.ControlPanel;
 import view.GameFrame;
 import view.MenuPanel;
 import view.world.GameLevel;
+import view.world.GameWorld;
+import view.world.level1.L1M1;
+import view.world.level1.L1M2;
 
 public class GameSimulator implements ActionListener
 {
+	private GameWorld world;
 	private GameFrame frame;
-	private ArrayList<GameLevel> menu;
-	private ArrayList<ArrayList<GameLevel>> levels;
 	private Timer timer;
 	
 	public GameSimulator()
 	{
-		frame = new GameFrame();
+		world = new GameWorld();
+		frame = new GameFrame(world);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.setVisible(true);
-		levels = new ArrayList<ArrayList<GameLevel>>();
-		menu = new ArrayList<GameLevel>();
-		menu.add(new MenuPanel(frame));
-		menu.add(new ControlPanel(frame));
-		levels.add(menu);
-		timer = new Timer(500, this);
+		timer = new Timer((int) (500*Math.PI), this);
 		timer.start();
 	}
 
@@ -42,6 +41,6 @@ public class GameSimulator implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		timer.stop();
-		frame.setLevels(levels);
+		frame.loadMap(new MenuPanel(frame,world));
 	}
 }

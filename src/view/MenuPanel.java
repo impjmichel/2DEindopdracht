@@ -16,7 +16,11 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import net.phys2d.math.Vector2f;
+
 import view.world.GameLevel;
+import view.world.GameWorld;
+import view.world.level1.L1M1;
 
 public class MenuPanel extends GameLevel implements ActionListener
 {
@@ -26,8 +30,9 @@ public class MenuPanel extends GameLevel implements ActionListener
 	private int select, maxSelect;
 	private Timer timer;
 	
-	public MenuPanel(GameFrame frame)
+	public MenuPanel(GameFrame frame, GameWorld world)
 	{
+		super(world);
 		this.frame = frame;
 		setPreferredSize(new Dimension(900,600));
 		select = 0;
@@ -88,10 +93,10 @@ public class MenuPanel extends GameLevel implements ActionListener
 		switch(select)
 		{
 			case 0:
-				System.out.println("start game!!");
+				frame.loadMap(new L1M1(world,frame, new Vector2f(400f,300)));
 				break;
 			case 1:
-				frame.nextMap();
+				frame.loadMap(new ControlPanel(frame,world));
 				break;
 			case 2:
 				System.exit(0);

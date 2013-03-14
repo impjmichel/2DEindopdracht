@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import view.world.GameLevel;
+import view.world.GameWorld;
 
 public class ControlPanel extends GameLevel implements ActionListener
 {
@@ -29,8 +29,9 @@ public class ControlPanel extends GameLevel implements ActionListener
 	private Timer timer;
 	private int selected;
 	
-	public ControlPanel(GameFrame frame)
+	public ControlPanel(GameFrame frame, GameWorld world)
 	{
+		super(world);
 		this.frame = frame;
 		selected = frame.isDefaultKeys();
 		select = 0;
@@ -168,13 +169,13 @@ public class ControlPanel extends GameLevel implements ActionListener
 			frame.setDefaultKeys(1);
 			break;
 		case 2:
-			frame.previousMap();
+			frame.loadMap(new MenuPanel(frame,world));
 			break;
 		}
 	}
 	public void escape()
 	{
-		frame.previousMap();
+		frame.loadMap(new MenuPanel(frame,world));
 	}
 
 	@Override
