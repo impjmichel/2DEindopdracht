@@ -1,0 +1,8 @@
+*.class
+*.bin
+*.swp
+*~
+*tmp
+*.jar
+*.war
+*.ear
