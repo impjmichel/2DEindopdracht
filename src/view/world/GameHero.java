@@ -14,6 +14,7 @@ public class GameHero
 		body.setRestitution(0.7f);
 		body.setFriction(0.6f);
 		body.setRotatable(false);
+		body.setMaxVelocity(30, 100);
 	}
 
 	public Body getHeroBody()
@@ -24,5 +25,6 @@ public class GameHero
 	public void move(Vector2f direction)
 	{
 		body.setForce(direction.x, direction.y);
+		
 	}
 }

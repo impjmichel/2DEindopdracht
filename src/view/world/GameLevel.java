@@ -23,12 +23,10 @@ public abstract class GameLevel extends JPanel
 	public void up()
 	{
 		world.flip();
-		world.setGrounded(false);
 	}
 	public void down()
 	{
 		world.flip();
-		world.setGrounded(false);
 	}
 	public abstract void left();
 	public abstract void right();

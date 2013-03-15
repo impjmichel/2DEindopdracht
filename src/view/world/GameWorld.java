@@ -8,29 +8,30 @@ public class GameWorld
 {
 	private World world2D;
 	private Vector2f gravity;
-	private boolean grounded;
 	private GameHero hero;
 	private float x,y;
 	private boolean gravitySuit;
+	private boolean closedL1M2;
+	private boolean closedL1M3;
+	private int gameHints;
 
 	public GameWorld()
 	{
-		grounded = true;
 		gravitySuit = true;
 		gravity = new Vector2f(.0f,30.0f);
 		world2D = new World(gravity,10,new QuadSpaceStrategy(20,5));
 		hero = new GameHero();
+		closedL1M2 = true;
+		closedL1M3 = true;
+		gameHints = 0;
 	}
 	
 	public void flip()
 	{
-		System.out.println(""+grounded);
-		if(grounded && gravitySuit)
+		if(gravitySuit)
 		{
 			float y = gravity.y*-1;
 			world2D.setGravity(0, y);
-			grounded = false;
-			System.out.println(""+grounded);
 		}
 	}
 	
@@ -54,16 +55,6 @@ public class GameWorld
 		this.gravity = gravity;
 	}
 
-	public boolean isGrounded()
-	{
-		return grounded;
-	}
-
-	public void setGrounded(boolean grounded)
-	{
-		this.grounded = grounded;
-	}
-
 	public GameHero getHero()
 	{
 		return hero;
@@ -78,5 +69,33 @@ public class GameWorld
 	{
 		return hero.getHeroBody().getPosition().getY();
 	}
-	
+
+	public boolean isClosedL1M2()
+	{
+		return closedL1M2;
+	}
+
+	public void setClosedL1M2(boolean closedL1M2)
+	{
+		this.closedL1M2 = closedL1M2;
+	}
+	public boolean isClosedL1M3()
+	{
+		return closedL1M3;
+	}
+
+	public void setClosedL1M3(boolean closedL1M3)
+	{
+		this.closedL1M3 = closedL1M3;
+	}
+
+	public int getGameHints()
+	{
+		return gameHints;
+	}
+
+	public void setGameHints(int gameHints)
+	{
+		this.gameHints = gameHints;
+	}
 }

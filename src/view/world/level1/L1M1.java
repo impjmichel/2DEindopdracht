@@ -2,17 +2,20 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
-import net.phys2d.raw.BodyList;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
@@ -29,7 +32,11 @@ public class L1M1 extends GameLevel implements ActionListener
 	private Timer timer;
 	private Body floor,wall1,wall2,roof1,roof2,hero2D;
 	private GameHero hero;
-	private ArrayList<Body> floors;
+	private boolean tutorial = false;
+	private boolean tutorialEnd = false;
+	private boolean tutorialMoved = false;
+	private int tutorialX = 920;
+	private final String[] s = {"Move left and right with the arrow keys","Move left and right with 'A' and 'D'"};
 	
 	public L1M1(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -42,7 +49,7 @@ public class L1M1 extends GameLevel implements ActionListener
 		wall1 = new StaticBody("wall", new Box(40f,340f));
 		wall1.setPosition(210f, 300);
 		
-		wall2 = new StaticBody("", new Box(40f,140f));
+		wall2 = new StaticBody("", new Box(40f,139f));
 		wall2.setPosition(610f, 200);
 		
 		roof1 = new StaticBody("", new Box(440f,40f));
@@ -53,11 +60,6 @@ public class L1M1 extends GameLevel implements ActionListener
 		
 		floor = new StaticBody("", new Box(720f,40f));
 		floor.setPosition(550f, 450);
-		
-		floors = new ArrayList<Body>();
-		floors.add(roof1);
-		floors.add(roof2);
-		floors.add(floor);
 		
 		world2D.add(floor);
 		world2D.add(roof1);
@@ -85,6 +87,28 @@ public class L1M1 extends GameLevel implements ActionListener
 		drawBox(g2, roof2);
 		g2.setColor(Color.BLUE);
 		drawBox(g2, hero2D);
+		
+		if(tutorial)
+		{
+			g2.setStroke(new BasicStroke(1));
+			g2.setColor(new Color(0,0,0,180));
+			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
+			g2.setColor(new Color(200,200,200,255));
+			Font font = new Font("Serif", Font.BOLD, 50);
+			g2.setFont(font);
+			FontRenderContext frc = g2.getFontRenderContext();
+			GlyphVector gv = null;
+			if(frame.isDefaultKeys() == 1)
+				gv = font.createGlyphVector(frc, s[0]);
+			else
+				gv = font.createGlyphVector(frc, s[1]);
+			Shape glyph = gv.getOutline(tutorialX+30,310);
+			g2.setColor(new Color(220,220,220,255));
+			
+			g2.fill(glyph);
+			g2.setColor(new Color(0,0,0,255));
+			g2.draw(glyph);
+		}
 	}
 
 	
@@ -92,15 +116,24 @@ public class L1M1 extends GameLevel implements ActionListener
 	@Override
 	public void left()
 	{
-		Vector2f left = new Vector2f(-10000f,0);
+		if(tutorialEnd)
+		{
+			tutorialMoved = true;
+		}
+		Vector2f left = new Vector2f(-1000000,0);
+		
 		hero.move(left);
 	}
 
 	@Override
 	public void right()
 	{
-		Vector2f right = new Vector2f(10000f,0);
+		Vector2f right = new Vector2f(1000000,0);
 		hero.move(right);
+		if(tutorialEnd)
+		{
+			tutorialMoved = true;
+		}
 	}
 
 	@Override
@@ -129,32 +162,36 @@ public class L1M1 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		for(int i=0; i<5; i++) 
+		if(world.getGameHints() == 0)
 		{
-			world2D.step();
-			validate();
-		}
-		repaint();
-
-		
-		BodyList list = hero2D.getConnected();
-		if(list.size() > 0)
-		{
-			for(Body ground : floors)
+			tutorial = true;
+			if(tutorialX > 0)
 			{
-				if(list.contains(ground))
+				tutorialX -= 10;
+				tutorialEnd = true;
+			}
+			if(tutorialMoved)
+			{
+				tutorialX-= 10;
+				if(tutorialX < -930)
 				{
-					world.setGrounded(true);
-					break;
+					world.setGameHints(1);
+					tutorial = false;
 				}
-				else
-					world.setGrounded(false);
 			}
 		}
+		if(!tutorial)
+		{
+			for(int i=0; i<5; i++) 
+			{
+				world2D.step();
+				validate();
+			}
+			}
+		repaint();
 		if(hero2D.getPosition().getX()>900)
 		{
 			frame.loadMap(new L1M2(world,frame, new Vector2f(10f,world.getY())));
-//			setHeroPosition(new Vector2f(10f,world.getY()+80));
 		}
 	}
 }
