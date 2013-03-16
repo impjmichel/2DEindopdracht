@@ -105,11 +105,7 @@ public class GameHero
 			Box box = (Box) body.getShape();
 			Vector2f[] pts = box.getPoints(body.getPosition(), body.getRotation());
 			Vector2f p1 = pts[0];
-			Vector2f p2 = pts[1];
-			Vector2f p3 = pts[2];
-			Vector2f p4 = pts[3];
 			float v = body.getVelocity().getX();
-			System.out.println("velocity : " + v);
 			if(stickman != null)
 			{
 				if((v > -5 && v < 5) || paused)
@@ -147,10 +143,6 @@ public class GameHero
 						g2.drawImage(subImg, (int)(p1.x)-10, (int) p1.y, 50, 80, null);
 				}
 			}
-			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-			g2.drawLine((int) p2.x,(int) p2.y,(int) p3.x,(int) p3.y);
-			g2.drawLine((int) p3.x,(int) p3.y,(int) p4.x,(int) p4.y);
-			g2.drawLine((int) p4.x,(int) p4.y,(int) p1.x,(int) p1.y);
 		}
 	}
 

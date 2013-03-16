@@ -246,10 +246,6 @@ public class L1M3 extends GameLevel implements ActionListener
 		{
 			if(y > 410 && y < 510)
 			{
-				System.out.println("tutorial : "+ tutorial);	
-				System.out.println("tutorialEnd : "+ tutorialEnd);	
-				System.out.println("tutorialMoved : "+ tutorialMoved);	
-				System.out.println("gameHints : "+ world.getGameHints());	
 				if(world.getGameHints() == 2)
 				{
 					world.setGameHints(3);
@@ -293,7 +289,6 @@ public class L1M3 extends GameLevel implements ActionListener
 			hero.setPaused(true);
 			if(tutorialX  > 0)
 			{
-				System.out.println("tutorialX : "+tutorialX);
 				tutorialX -= 15;
 				tutorialEnd = true;
 			}
@@ -306,10 +301,14 @@ public class L1M3 extends GameLevel implements ActionListener
 				{
 					world.setGameHints(4);
 					tutorial = false;
-					hero.switchBody();
-					hero.setPaused(false);
 					world.setClosedL1M3(false);
 					world.setGravitySuit(true);
+					world2D.remove(hero2D);
+					hero.switchBody();
+					hero2D = hero.getHeroBody();
+					world2D.add(hero2D);
+					hero.setPaused(false);
+					
 				}
 			}
 		}
@@ -324,6 +323,8 @@ public class L1M3 extends GameLevel implements ActionListener
 		repaint();
 		if(hero2D.getPosition().getX()<0)
 			frame.loadMap(new L1M2(world,frame,new Vector2f(870f,world.getY())));
+		else if(hero2D.getPosition().getX()>900)
+			frame.loadMap(new L1M4(world,frame,new Vector2f(10f,world.getY())));
 	}
 	
 }
