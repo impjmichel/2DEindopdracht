@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
-
 import view.world.GameLevel;
 import view.world.GameWorld;
 import view.world.level1.L1M1;

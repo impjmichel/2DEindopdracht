@@ -17,10 +17,10 @@ public class GameWorld
 
 	public GameWorld()
 	{
-		gravitySuit = true;
+		gravitySuit = false;
 		gravity = new Vector2f(.0f,30.0f);
 		world2D = new World(gravity,10,new QuadSpaceStrategy(20,5));
-		hero = new GameHero();
+		hero = new GameHero(this);
 		closedL1M2 = true;
 		closedL1M3 = true;
 		gameHints = 0;
@@ -97,5 +97,15 @@ public class GameWorld
 	public void setGameHints(int gameHints)
 	{
 		this.gameHints = gameHints;
+	}
+
+	public boolean isGravitySuit()
+	{
+		return gravitySuit;
+	}
+
+	public void setGravitySuit(boolean gravitySuit)
+	{
+		this.gravitySuit = gravitySuit;
 	}
 }

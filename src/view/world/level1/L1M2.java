@@ -5,14 +5,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
@@ -38,7 +42,10 @@ public class L1M2 extends GameLevel implements ActionListener
 	private boolean tutorialEnd = false;
 	private boolean tutorialMoved = false;
 	private int tutorialX = 920;
-	private final String[] s = {"Interact with object by pressing Space","Interact with object by pressing Enter"};
+	private final String[] s = {"Interact with objects by pressing Space","Interact with objects by pressing Enter"};
+	private Image pcImage;
+	private int pcX;
+	private int pcCounter;
 	
 	public L1M2(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -47,6 +54,8 @@ public class L1M2 extends GameLevel implements ActionListener
 		world2D = world.getWorld2D();
 		world2D.clear();
 		timer = new Timer(1000/60,this);
+		pcX = 0;
+		pcCounter = 0;
 		
 		doorY = 330;
 		door = new StaticBody("", new Box(30,200));
@@ -66,6 +75,15 @@ public class L1M2 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);
+		
+		try
+		{
+			pcImage = ImageIO.read(new File("src/view/img/pc93.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void paintComponent(Graphics g)
@@ -74,18 +92,17 @@ public class L1M2 extends GameLevel implements ActionListener
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setStroke(new BasicStroke(2));
-
-		g2.setColor(Color.RED);
+		g2.setColor(new Color(40,40,40));
 		drawBox(g2, floor);
 		drawBox(g2, roof);
-		g2.setColor(Color.BLUE);
-		drawBox(g2, hero2D);
-		g2.setColor(Color.BLACK);
 		fillBox(g2, door);
 		
-		g2.setColor(new Color(255,255,255,90));
-		Rectangle2D pc = new Rectangle2D.Double(600,330,100,100);
-		g2.fill(pc);
+		if(pcImage != null)
+		{
+			BufferedImage subImg = ((BufferedImage) pcImage).getSubimage(pcX*93, 0, 93, 94);
+		g2.drawImage(subImg, 553, 336, 93, 94, null);
+		}
+		hero.drawHero(g2);
 		
 		if(tutorial)
 		{
@@ -135,7 +152,7 @@ public class L1M2 extends GameLevel implements ActionListener
 		}
 		int x = (int) hero2D.getPosition().getX();
 		int y = (int) hero2D.getPosition().getY();
-		if(x > 600 && x < 700)
+		if(x > 550 && x < 650)
 		{
 			if(y > 330 && y < 440)
 			{
@@ -168,6 +185,10 @@ public class L1M2 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		pcCounter = (pcCounter+1)%5;
+		if(pcCounter == 4 && world.isClosedL1M2())
+			pcX = (pcX+1)%4;
+		
 		if(!world.isClosedL1M2())
 		{
 			if(doorY > 169)
@@ -187,18 +208,20 @@ public class L1M2 extends GameLevel implements ActionListener
 		if(world.getGameHints() == 1)
 		{
 			tutorial = true;
+			hero.setPaused(true);
 			if(tutorialX > 0)
 			{
-				tutorialX -= 10;
+				tutorialX -= 15;
 				tutorialEnd = true;
 			}
 			if(tutorialMoved)
 			{
-				tutorialX-= 10;
+				tutorialX-= 15;
 				if(tutorialX < -930)
 				{
 					world.setGameHints(2);
 					tutorial = false;
+					hero.setPaused(false);
 				}
 			}
 		}

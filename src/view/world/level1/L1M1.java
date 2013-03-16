@@ -79,14 +79,14 @@ public class L1M1 extends GameLevel implements ActionListener
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setStroke(new BasicStroke(2));
+		g2.setColor(new Color(40,40,40));
 		drawBox(g2, wall1);
 		drawBox(g2, wall2);
-		g2.setColor(Color.RED);
 		drawBox(g2, floor);
 		drawBox(g2, roof1);
 		drawBox(g2, roof2);
-		g2.setColor(Color.BLUE);
-		drawBox(g2, hero2D);
+		
+		hero.drawHero(g2);
 		
 		if(tutorial)
 		{
@@ -167,12 +167,12 @@ public class L1M1 extends GameLevel implements ActionListener
 			tutorial = true;
 			if(tutorialX > 0)
 			{
-				tutorialX -= 10;
+				tutorialX -= 15;
 				tutorialEnd = true;
 			}
 			if(tutorialMoved)
 			{
-				tutorialX-= 10;
+				tutorialX-= 15;
 				if(tutorialX < -930)
 				{
 					world.setGameHints(1);

@@ -2,10 +2,14 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.Timer;
@@ -32,6 +36,15 @@ public class L1M3 extends GameLevel implements ActionListener
 				 door,hero2D;
 	private GameHero hero;
 	private int doorY;
+	private boolean tutorial = false;
+	private boolean tutorialEnd = false;
+	private int tutorialMoved = 0;
+	private int tutorialX = 920;
+	private final String[] s = {"Congratulations","Congratulations...","You have obtained a gravity suit.",
+			"Press up or down to use its functionality.","Press 'W' or 'S' to use its functionality.",
+			"...","Please move on so we can start the testing.","At the end of the course there will be cake.",
+			"...","I just heard one of the testsubjects escaped...","with the cake.",
+			"I will see to it that you will be equivalently","rewarded in pies."};
 
 	
 	public L1M3(GameWorld world, GameFrame frame, Vector2f position)
@@ -119,6 +132,12 @@ public class L1M3 extends GameLevel implements ActionListener
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setStroke(new BasicStroke(2));
+		
+		g2.setColor(new Color(255,255,255,90));
+		Rectangle2D pc = new Rectangle2D.Double(400,410,100,100);
+		g2.fill(pc);
+		
+		g2.setColor(new Color(40,40,40));
 		drawBox(g2, wall);
 		drawBox(g2, wall2);
 		drawBox(g2, wall3);
@@ -127,7 +146,6 @@ public class L1M3 extends GameLevel implements ActionListener
 		drawBox(g2, wall6);
 		drawBox(g2, wall7);
 		drawBox(g2, wall8);
-		g2.setColor(Color.RED);
 		drawBox(g2, floor);
 		drawBox(g2, floor2);
 		drawBox(g2, floor3);
@@ -138,15 +156,63 @@ public class L1M3 extends GameLevel implements ActionListener
 		drawBox(g2, roof5);
 		drawBox(g2, roof6);
 		drawBox(g2, roof7);
-		
-		g2.setColor(Color.BLUE);
-		drawBox(g2, hero2D);
-		g2.setColor(Color.BLACK);
 		fillBox(g2, door);
 		
-		g2.setColor(new Color(255,255,255,90));
-		Rectangle2D pc = new Rectangle2D.Double(400,400,100,100);
-		g2.fill(pc);
+		hero.drawHero(g2);
+		
+		if(tutorial)
+		{
+			g2.setStroke(new BasicStroke(1));
+			g2.setColor(new Color(0,0,0,180));
+			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
+			g2.setColor(new Color(200,200,200,255));
+			Font font = new Font("Monospaced", Font.BOLD, 30);
+			g2.setFont(font);
+			FontRenderContext frc = g2.getFontRenderContext();
+			GlyphVector gv = font.createGlyphVector(frc, "");
+			GlyphVector gv2 = font.createGlyphVector(frc, "");
+			if(tutorialMoved == 1)
+				gv = font.createGlyphVector(frc, s[0]);
+			else if(tutorialMoved == 2)
+				gv = font.createGlyphVector(frc, s[1]);
+			else if(tutorialMoved == 3)
+				gv = font.createGlyphVector(frc, s[2]);
+			else if(tutorialMoved == 4)
+				if(frame.isDefaultKeys() == 1)
+					gv = font.createGlyphVector(frc, s[3]);
+				else
+					gv = font.createGlyphVector(frc, s[4]);
+			else if(tutorialMoved == 5)
+			{
+				gv = font.createGlyphVector(frc, s[5]);
+			}
+			else if(tutorialMoved == 6)
+				gv = font.createGlyphVector(frc, s[6]);
+			else if(tutorialMoved == 7)
+				gv = font.createGlyphVector(frc, s[7]);
+			else if(tutorialMoved == 8)
+				gv = font.createGlyphVector(frc, s[8]);
+			else if(tutorialMoved == 9)
+				gv = font.createGlyphVector(frc, s[9]);
+			else if(tutorialMoved == 10)
+			{
+				gv = font.createGlyphVector(frc, s[9]);
+				gv2 = font.createGlyphVector(frc, s[10]);
+			}
+			else if(tutorialMoved == 11)
+			{
+				gv = font.createGlyphVector(frc, s[11]);
+				gv2 = font.createGlyphVector(frc, s[12]);
+			}
+			Shape glyph = gv.getOutline(35,310);
+			Shape glyph2 = gv2.getOutline(35,340);
+			g2.setColor(new Color(220,220,220,255));
+			g2.fill(glyph);
+			g2.fill(glyph2);
+			g2.setColor(new Color(0,0,0,255));
+			g2.draw(glyph);
+			g2.draw(glyph2);
+		} 
 	}
 
 	
@@ -168,13 +234,26 @@ public class L1M3 extends GameLevel implements ActionListener
 	@Override
 	public void enter()
 	{
+		if(tutorialEnd)
+		{
+			tutorialMoved ++;
+			tutorialEnd = false;
+		}
+		
 		int x = (int) hero2D.getPosition().getX();
 		int y = (int) hero2D.getPosition().getY();
-		if(x > 600 && x < 700)
+		if(x > 400 && x < 500)
 		{
-			if(y > 330 && y < 440)
+			if(y > 410 && y < 510)
 			{
-				world.setClosedL1M3(false);
+				System.out.println("tutorial : "+ tutorial);	
+				System.out.println("tutorialEnd : "+ tutorialEnd);	
+				System.out.println("tutorialMoved : "+ tutorialMoved);	
+				System.out.println("gameHints : "+ world.getGameHints());	
+				if(world.getGameHints() == 2)
+				{
+					world.setGameHints(3);
+				}
 			}
 		}
 	}
@@ -208,10 +287,39 @@ public class L1M3 extends GameLevel implements ActionListener
 				door.setPosition(800, doorY);
 			}
 		}
-		for(int i=0; i<5; i++) 
+		if(world.getGameHints() == 3)
 		{
-			world2D.step();
-			validate();
+			tutorial = true;
+			hero.setPaused(true);
+			if(tutorialX  > 0)
+			{
+				System.out.println("tutorialX : "+tutorialX);
+				tutorialX -= 15;
+				tutorialEnd = true;
+			}
+			if(tutorialMoved > 0)
+				tutorialEnd = true;
+			if(tutorialMoved == 12)
+			{
+				tutorialX-= 15;
+				if(tutorialX < -930)
+				{
+					world.setGameHints(4);
+					tutorial = false;
+					hero.switchBody();
+					hero.setPaused(false);
+					world.setClosedL1M3(false);
+					world.setGravitySuit(true);
+				}
+			}
+		}
+		if(!tutorial)
+		{
+			for(int i=0; i<5; i++) 
+			{
+				world2D.step();
+				validate();
+			}
 		}
 		repaint();
 		if(hero2D.getPosition().getX()<0)
