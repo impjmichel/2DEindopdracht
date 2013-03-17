@@ -6,7 +6,6 @@ import net.phys2d.math.ROVector2f;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.StaticBody;
-import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.Polygon;
 
 public class GameSpike
@@ -27,12 +26,12 @@ public class GameSpike
 		spike.setPosition(position.x, position.y);
 	}
 
-	public Body getSpike()
+	public Body getBody()
 	{
 		return spike;
 	}
 
-	public void setSpike(Body spike)
+	public void setBody(Body spike)
 	{
 		this.spike = spike;
 	}

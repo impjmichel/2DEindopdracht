@@ -2,6 +2,9 @@ package view.world;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +79,19 @@ public class GameHero
 	public void move(Vector2f direction)
 	{
 		body.setForce(direction.x, direction.y);
+	}
+	
+	public Shape getRectangle2D()
+	{
+		Rectangle2D r = null;
+		double posX = body.getPosition().getX();
+		double posY = body.getPosition().getY();
+		double rotation = body.getRotation();
+		r = new Rectangle2D.Double(posX-35,posY-35,70,70);
+		AffineTransform tr = new AffineTransform();
+		tr.rotate(rotation, posY, posY);
+		
+		return tr.createTransformedShape(r);
 	}
 	
 	public void drawHero(Graphics2D g2)

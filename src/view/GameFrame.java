@@ -15,15 +15,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import net.phys2d.math.Vector2f;
+
 import view.world.GameLevel;
 import view.world.GameWorld;
+import view.world.level1.L1M3;
 
 public class GameFrame extends JFrame implements KeyListener
 {
 	private GameWorld world;
 	private GameLevel content;
 	private LoadScreen loading;
-	private ArrayList<ArrayList<GameLevel>> levels;
 	private int defaultKeys;
 
 	public GameFrame(GameWorld world)
@@ -95,17 +97,10 @@ public class GameFrame extends JFrame implements KeyListener
 	{
 		
 	}
-
-	public void setLevels(ArrayList<ArrayList<GameLevel>> levels)
+	
+	public void killHero()
 	{
-		this.levels = levels;
-		loading.stop();
-		setContentPane(new JPanel());
-		content = levels.get(0).get(0);
-		setContentPane(content);
-		content.start();
-		validate();
-		repaint();
+		loadMap(new L1M3(world,this,new Vector2f(450,400)));
 	}
 	
 	public void loadMap(GameLevel map)

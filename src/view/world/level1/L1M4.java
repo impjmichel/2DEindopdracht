@@ -5,29 +5,30 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
+import net.phys2d.math.ROVector2f;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
+import net.phys2d.raw.BodyList;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import net.phys2d.raw.shapes.Polygon;
 import view.GameFrame;
 import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
+import view.world.GameSpike;
 import view.world.GameWorld;
 
 public class L1M4 extends GameLevel implements ActionListener
@@ -35,9 +36,11 @@ public class L1M4 extends GameLevel implements ActionListener
 	private World world2D;
 	private GameFrame frame;
 	private Timer timer;
-	private Body floor,roof,door,hero2D;
+	private Body floor,floor2,floor3,floor4,floor5,roof,hero2D;
+	private GameSpike spike;
+	private BodyList spikes;
 	private GameHero hero;
-	private final String[] s = {"Fun fact :  the longer you stay in the suit,","the more likely it is your arms will degenerate"};
+	private final String[] s = {"Fun fact :  the longer you stay in the suit,","the more likely it is your arms will degenerate."};
 	
 	public L1M4(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -52,7 +55,27 @@ public class L1M4 extends GameLevel implements ActionListener
 		
 		floor = new StaticBody("", new Box(1200f,40f));
 		floor.setPosition(550f, 530);
+		floor2 = new StaticBody("", new Box(300f,40f));
+		floor2.setPosition(770f, 450);
+		floor5 = new StaticBody("", new Box(100f,40f));
+		floor5.setPosition(4000f, 450);
+		floor3 = new StaticBody("", new Box(500f,40f));
+		floor3.setPosition(550f, 490);
+		floor4 = new StaticBody("", new Box(113.137f,40f));
+		floor4.setPosition(200f, 490);
+		floor4.adjustRotation((float) (-Math.PI/4));
 		
+		spikes = new BodyList();
+		spike = new GameSpike(new Vector2f(400,300));
+		Body spikey = spike.getBody();
+		spikes.add(spikey);
+		
+		world2D.add(spikey);
+		
+		
+		world2D.add(floor2);
+		world2D.add(floor3);
+		world2D.add(floor4);
 		world2D.add(floor);
 		world2D.add(roof);
 		
@@ -60,6 +83,12 @@ public class L1M4 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);		
+		
+		BodyList listTest = world2D.getBodies();
+		for ( int z = 0; z < listTest.size(); z++)
+		{
+			System.out.println("to string : "+listTest.get(z));
+		}
 	}
 	
 	public void paintComponent(Graphics g)
@@ -70,7 +99,11 @@ public class L1M4 extends GameLevel implements ActionListener
 		g2.setStroke(new BasicStroke(2));
 		g2.setColor(new Color(40,40,40));
 		drawBox(g2, floor);
+		drawBox(g2, floor2);
+		drawBox(g2, floor3);
+		drawBox(g2, floor4);
 		drawBox(g2, roof);
+		spike.drawSpike(g2);
 
 		hero.drawHero(g2);
 
