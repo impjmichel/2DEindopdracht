@@ -5,6 +5,7 @@ import net.phys2d.raw.World;
 import net.phys2d.raw.strategies.QuadSpaceStrategy;
 import view.GameFrame;
 import view.world.level1.L1M3;
+import view.world.level1.L1M36;
 
 public class GameWorld
 {
@@ -12,11 +13,12 @@ public class GameWorld
 	private Vector2f gravity;
 	private GameHero hero;
 	private GameFrame frame;
-	private float x,y;
+	private int saveSpot;
 	private boolean gravitySuit;
 	private boolean closedL1M2;
 	private boolean closedL1M3;
 	private int gameHints;
+	private boolean dead;
 
 	public GameWorld()
 	{
@@ -27,6 +29,8 @@ public class GameWorld
 		closedL1M2 = true;
 		closedL1M3 = true;
 		gameHints = 0;
+		saveSpot = 0;
+		dead = false;
 	}
 	
 	public void flip()
@@ -45,7 +49,21 @@ public class GameWorld
 	
 	public void killHero()
 	{
-		frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
+		setDead(true);
+		
+		switch(saveSpot)
+		{
+		case 0: frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
+			break;
+		case 1: // L1 M8
+			break;
+		case 2: // L1 M18
+			break;
+		case 3: // L1 M23
+			break;
+		case 4: frame.loadMap(new L1M36(this,frame,new Vector2f(425,300)));
+			break;
+		}
 	}
 	
 	public World getWorld2D()
@@ -121,4 +139,25 @@ public class GameWorld
 	{
 		this.gravitySuit = gravitySuit;
 	}
+
+	public int getSaveSpot()
+	{
+		return saveSpot;
+	}
+
+	public void setSaveSpot(int saveSpot)
+	{
+		this.saveSpot = saveSpot;
+	}
+
+	public boolean isDead()
+	{
+		return dead;
+	}
+
+	public void setDead(boolean dead)
+	{
+		this.dead = dead;
+	}
+	
 }
