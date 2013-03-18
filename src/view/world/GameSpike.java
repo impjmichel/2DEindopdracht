@@ -1,32 +1,26 @@
 package view.world;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 
-import net.phys2d.math.ROVector2f;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
+import net.phys2d.raw.BodyList;
 import net.phys2d.raw.StaticBody;
-import net.phys2d.raw.shapes.ConvexPolygon;
-import net.phys2d.raw.shapes.Polygon;
+import net.phys2d.raw.shapes.Box;
+import view.GameFrame;
 
 public class GameSpike
 {
 	private Vector2f position;
 	private Body spike;
+	private GameWorld world;
 
-	public GameSpike(Vector2f position)
+	public GameSpike(Vector2f position, GameWorld world)
 	{
 		this.position = position;
-		Vector2f p1 = new Vector2f(position.x,position.y);
-		Vector2f p2 = new Vector2f(position.x+20,position.y);
-		Vector2f p3 = new Vector2f(position.x+10,position.y+20);
+		this.world = world;
 		
-		
-		ROVector2f[] vertices = {p1,p2,p3};
-		spike = new StaticBody("spike", new ConvexPolygon(vertices));
+		spike = new StaticBody("spike", new Box(20,20));
 		spike.setPosition(position.x, position.y);
 	}
 
@@ -52,19 +46,19 @@ public class GameSpike
 	
 	public void drawSpike(Graphics2D g2)
 	{
-		Polygon spikey = (Polygon) spike.getShape();
-		ROVector2f[] pts = spikey.getVertices();
+		Box box = (Box) spike.getShape();
+		Vector2f[] pts = box.getPoints(spike.getPosition(), spike.getRotation());
 
-		ROVector2f p1 = pts[0];
-		ROVector2f p2 = pts[1];
-		ROVector2f p3 = pts[2];
-		double rotation = spike.getRotation();
-		GeneralPath path = new GeneralPath();
-		path.append(new Line2D.Double(p1.getX(),p1.getY(),p2.getX(),p2.getY()), true);
-		path.append(new Line2D.Double(p2.getX(),p2.getY(),p3.getX(),p3.getY()),true);
-		path.append(new Line2D.Double(p3.getX(),p3.getY(),p1.getX(),p1.getY()),true);
-		AffineTransform tr = new AffineTransform();
-		tr.rotate(rotation,0,0);
-		g2.draw(tr.createTransformedShape(path));
+		Vector2f p1 = pts[0];
+		Vector2f p2 = pts[1];
+		Vector2f p3 = pts[2];
+		
+		g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
+		g2.drawLine((int) p2.x,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y);
+		g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y,(int) p1.x,(int) p1.y);
+		
+		BodyList list = spike.getTouching();
+		if(list.contains(world.getHero().getHeroBody()))
+			world.killHero();
 	}
 }

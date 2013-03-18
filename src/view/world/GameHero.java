@@ -58,7 +58,7 @@ public class GameHero
 		}
 		if(world.isGravitySuit())
 		{
-			body = new Body("hero", new Box(70f,70f), 100);
+			body = new Body("hero", new Box(65f,65f), 100);
 			body.setPosition(posX, posY);
 			body.setRestitution(0.6f);
 			body.setFriction(0.5f);

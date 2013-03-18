@@ -97,11 +97,6 @@ public class GameFrame extends JFrame implements KeyListener
 		
 	}
 	
-	public void killHero()
-	{
-		loadMap(new L1M3(world,this,new Vector2f(450,400)));
-	}
-	
 	public void loadMap(GameLevel map)
 	{
 		content.stop();

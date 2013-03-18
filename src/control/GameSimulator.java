@@ -24,6 +24,7 @@ public class GameSimulator implements ActionListener
 	{
 		world = new GameWorld();
 		frame = new GameFrame(world);
+		world.setFrame(frame);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);

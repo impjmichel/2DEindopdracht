@@ -3,12 +3,15 @@ package view.world;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.World;
 import net.phys2d.raw.strategies.QuadSpaceStrategy;
+import view.GameFrame;
+import view.world.level1.L1M3;
 
 public class GameWorld
 {
 	private World world2D;
 	private Vector2f gravity;
 	private GameHero hero;
+	private GameFrame frame;
 	private float x,y;
 	private boolean gravitySuit;
 	private boolean closedL1M2;
@@ -33,6 +36,16 @@ public class GameWorld
 			float y = gravity.y*-1;
 			world2D.setGravity(0, y);
 		}
+	}
+	
+	public void setFrame(GameFrame frame)
+	{
+		this.frame = frame;
+	}
+	
+	public void killHero()
+	{
+		frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
 	}
 	
 	public World getWorld2D()
