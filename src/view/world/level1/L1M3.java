@@ -234,7 +234,7 @@ public class L1M3 extends GameLevel implements ActionListener
 	@Override
 	public void enter()
 	{
-		if(tutorialEnd)
+		if(tutorialEnd && hero.isPaused())
 		{
 			tutorialMoved ++;
 			tutorialEnd = false;
@@ -289,14 +289,14 @@ public class L1M3 extends GameLevel implements ActionListener
 			hero.setPaused(true);
 			if(tutorialX  > 0)
 			{
-				tutorialX -= 15;
+				tutorialX -= 25;
 				tutorialEnd = true;
 			}
 			if(tutorialMoved > 0)
 				tutorialEnd = true;
 			if(tutorialMoved == 12)
 			{
-				tutorialX-= 15;
+				tutorialX-= 25;
 				if(tutorialX < -930)
 				{
 					world.setGameHints(4);

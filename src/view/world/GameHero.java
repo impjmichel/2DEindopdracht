@@ -129,7 +129,7 @@ public class GameHero
 					if(stickman != null)
 					{
 						Image subImg = ((BufferedImage) stickman).getSubimage(0, 0, 50, 80);
-						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y, 50, 80, null);
+						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y+1, 50, 80, null);
 					}
 				}
 				if((v > 5 && v < 20) && !paused)
@@ -137,7 +137,7 @@ public class GameHero
 					if(stickman != null)
 					{
 						BufferedImage subImg = ((BufferedImage) stickman).getSubimage(50+50*walking, 0, 50, 80);
-						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y, 50, 80, null);
+						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y+1, 50, 80, null);
 					}
 				}
 				if(v > 20 && !paused)
@@ -145,18 +145,18 @@ public class GameHero
 					if(stickman != null)
 					{
 						BufferedImage subImg = ((BufferedImage) stickman).getSubimage(50*running, 80, 50, 80);
-						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y, 50, 80, null);
+						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y+2, 50, 80, null);
 					}
 				}
 				if((v < -5 && v > -20) && !paused)
 				{
 						BufferedImage subImg = ((BufferedImage) stickman).getSubimage(50+50*walking, 160, 50, 80);
-						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y, 50, 80, null);
+						g2.drawImage(subImg, (int) p1.x-10, (int) p1.y+1, 50, 80, null);
 				}
 				if(v < -20 && !paused)
 				{
 						BufferedImage subImg = ((BufferedImage) stickman).getSubimage(50*running, 240, 50, 80);
-						g2.drawImage(subImg, (int)(p1.x)-10, (int) p1.y, 50, 80, null);
+						g2.drawImage(subImg, (int)(p1.x)-10, (int) p1.y+2, 50, 80, null);
 				}
 			}
 		}

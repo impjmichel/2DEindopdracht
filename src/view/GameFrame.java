@@ -1,22 +1,21 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
-
 import view.world.GameLevel;
 import view.world.GameWorld;
 import view.world.level1.L1M3;
@@ -141,13 +140,19 @@ public class GameFrame extends JFrame implements KeyListener
 		{
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.translate(450, 250);
 			Ellipse2D circle = new Ellipse2D.Double(-25, -25, 50, 50);
-			Ellipse2D ball = new Ellipse2D.Double(-15, -15, 10, 10);
-			AffineTransform tr = new AffineTransform();
-			tr.rotate(direction,0,0);
+			for(int i = 0; i < 8; i++)
+			{
+				g2.setColor(new Color(0,0,0,25*i+25));
+				Ellipse2D ball = new Ellipse2D.Double(-15, -15, 10, 10);
+				AffineTransform tr = new AffineTransform();
+				tr.rotate(direction+i*(2*Math.PI/8),0,0);
+				g2.fill(tr.createTransformedShape(ball));
+			}
+			g2.setColor(Color.BLACK);
 			g2.draw(circle);
-			g2.draw(tr.createTransformedShape(ball));
 		}
 		@Override
 		public void up()
@@ -194,7 +199,7 @@ public class GameFrame extends JFrame implements KeyListener
 		}
 		public void update()
 		{
-			direction = (direction+Math.PI/180)%(Math.PI*2);
+			direction = (direction+Math.PI/90)%(Math.PI*2);
 			repaint();
 		}
 	}
