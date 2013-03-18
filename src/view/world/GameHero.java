@@ -19,7 +19,7 @@ public class GameHero
 {
 	private GameWorld world;
 	private Body body;
-	private Image stickman;
+	private Image stickman,cube;
 	private int counter;
 	private int walking;
 	private int running;
@@ -35,6 +35,7 @@ public class GameHero
 		
 		try
 		{
+			cube = ImageIO.read(new File("src/view/img/cube.png"));
 			stickman = ImageIO.read(new File("src/view/img/man50x80.png"));
 		} catch (IOException e)
 		{
@@ -107,14 +108,14 @@ public class GameHero
 			Vector2f[] pts = box.getPoints(body.getPosition(), body.getRotation());
 	
 			Vector2f p1 = pts[0];
-			Vector2f p2 = pts[1];
-			Vector2f p3 = pts[2];
-			Vector2f p4 = pts[3];
-			
-			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-			g2.drawLine((int) p2.x,(int) p2.y,(int) p3.x,(int) p3.y);
-			g2.drawLine((int) p3.x,(int) p3.y,(int) p4.x,(int) p4.y);
-			g2.drawLine((int) p4.x,(int) p4.y,(int) p1.x,(int) p1.y);
+	
+			if(cube != null)
+			{
+				AffineTransform tr = new AffineTransform();
+				tr.translate(p1.x, p1.y);
+				tr.rotate(body.getRotation(), 0, 0);
+				g2.drawImage(cube, tr, null);
+			}
 		}
 		else
 		{

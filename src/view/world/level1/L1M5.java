@@ -34,7 +34,7 @@ public class L1M5 extends GameLevel implements ActionListener
 	private Timer timer;
 	private Body floor,floor2,floor3,floor4,wall,wall2,wall3,wall4,wall5,wall6,wall7,roof,roof2,roof3,roof4,hero2D;
 	private GameHero hero;
-	private final String[] s = {"Fun fact :  the longer you stay in the suit,","the more likely it is your arms will degenerate."};
+	private final String[] s = {"Here's another fun fact : excessive use of the","suit might cause disorientation and headaches."};
 	private int hintY;
 	
 	public L1M5(GameWorld world, GameFrame frame, Vector2f position)
@@ -211,11 +211,11 @@ public class L1M5 extends GameLevel implements ActionListener
 //				world.setGameHints(6);
 //			frame.loadMap(new L1M6(world,frame, new Vector2f(10f,world.getY())));
 //		}
-//		else if(hero2D.getPosition().getY()>600)
-//		{
-//			if(world.getGameHints() == 5)
-//				world.setGameHints(6);
-//			frame.loadMap(new L1M21(world,frame, new Vector2f(10f,world.getY())));
-//		}
+		else if(hero2D.getPosition().getY()>600)
+		{
+			if(world.getGameHints() == 5)
+				world.setGameHints(6);
+			frame.loadMap(new L1M21(world,frame, new Vector2f(world.getX(),10)));
+		}
 	}
 }

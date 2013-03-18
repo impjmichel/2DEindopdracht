@@ -53,9 +53,18 @@ public class GameSpike
 		Vector2f p2 = pts[1];
 		Vector2f p3 = pts[2];
 		
-		g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-		g2.drawLine((int) p2.x,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y);
-		g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y,(int) p1.x,(int) p1.y);
+		if(spike.getRotation() == (float) (Math.PI/2) || spike.getRotation() == (float) ((Math.PI/2)*3))
+		{
+			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
+			g2.drawLine((int) p2.x,(int) p2.y,(int) p3.x,(int) (p1.y+p2.y)/2);
+			g2.drawLine((int) p3.x,(int) (p1.y+p2.y)/2,(int) p1.x,(int) p1.y);
+		}
+		else
+		{
+			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
+			g2.drawLine((int) p2.x,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y);
+			g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y,(int) p1.x,(int) p1.y);
+		}
 		
 		BodyList list = spike.getTouching();
 		if(list.contains(world.getHero().getHeroBody()))
