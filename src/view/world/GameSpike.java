@@ -20,7 +20,7 @@ public class GameSpike
 		this.position = position;
 		this.world = world;
 		
-		spike = new StaticBody("spike", new Box(20,20));
+		spike = new StaticBody("spike", new Box(14,14));
 		spike.setPosition(position.x, position.y);
 	}
 
@@ -53,17 +53,29 @@ public class GameSpike
 		Vector2f p2 = pts[1];
 		Vector2f p3 = pts[2];
 		
-		if(spike.getRotation() == (float) (Math.PI/2) || spike.getRotation() == (float) ((Math.PI/2)*3))
+		if(spike.getRotation() == (float) ((Math.PI/2)*3))
 		{
-			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-			g2.drawLine((int) p2.x,(int) p2.y,(int) p3.x,(int) (p1.y+p2.y)/2);
-			g2.drawLine((int) p3.x,(int) (p1.y+p2.y)/2,(int) p1.x,(int) p1.y);
+			g2.drawLine((int) p1.x,(int) p1.y+3,(int) p2.x,(int) p2.y-3);
+			g2.drawLine((int) p2.x,(int) p2.y-3,(int) p3.x+6,(int) (p1.y+p2.y)/2);
+			g2.drawLine((int) p3.x+6,(int) (p1.y+p2.y)/2,(int) p1.x,(int) p1.y+3);
 		}
-		else
+		else if(spike.getRotation() == (float) (Math.PI))
 		{
-			g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-			g2.drawLine((int) p2.x,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y);
-			g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y,(int) p1.x,(int) p1.y);
+			g2.drawLine((int) p1.x+3,(int) p1.y,(int) p2.x-3,(int) p2.y);
+			g2.drawLine((int) p2.x-3,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y-6);
+			g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y-6,(int) p1.x+3,(int) p1.y);
+		}
+		else if(spike.getRotation() == (float) (Math.PI/2))
+		{
+			g2.drawLine((int) p1.x,(int) p1.y-3,(int) p2.x,(int) p2.y+3);
+			g2.drawLine((int) p2.x,(int) p2.y+3,(int) p3.x-6,(int) (p1.y+p2.y)/2);
+			g2.drawLine((int) p3.x-6,(int) (p1.y+p2.y)/2,(int) p1.x,(int) p1.y-3);
+		}
+		else if(spike.getRotation() == 0)
+		{
+			g2.drawLine((int) p1.x-3,(int) p1.y,(int) p2.x+3,(int) p2.y);
+			g2.drawLine((int) p2.x+3,(int) p2.y,(int) (p2.x+p1.x)/2,(int) p3.y+6);
+			g2.drawLine((int) (p2.x+p1.x)/2,(int) p3.y+6,(int) p1.x-3,(int) p1.y);
 		}
 		
 		BodyList list = spike.getTouching();

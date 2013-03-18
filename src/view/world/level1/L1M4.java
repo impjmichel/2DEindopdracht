@@ -69,7 +69,7 @@ public class L1M4 extends GameLevel implements ActionListener
 		spikes = new ArrayList<GameSpike>();
 		for(int i = 0; i < 13; i++)
 		{
-			spike = new GameSpike(new Vector2f(356+20*i,460), world);
+			spike = new GameSpike(new Vector2f(359+20*i,463), world);
 			Body spikey = spike.getBody();
 			spikey.adjustRotation((float) Math.PI);
 			spikes.add(spike);
