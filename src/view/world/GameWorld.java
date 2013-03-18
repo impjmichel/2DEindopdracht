@@ -1,5 +1,10 @@
 package view.world;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.World;
 import net.phys2d.raw.strategies.QuadSpaceStrategy;
@@ -7,16 +12,19 @@ import view.GameFrame;
 import view.world.level1.L1M3;
 import view.world.level1.L1M36;
 
-public class GameWorld
+public class GameWorld implements ActionListener
 {
 	private World world2D;
 	private Vector2f gravity;
 	private GameHero hero;
 	private GameFrame frame;
-	private int saveSpot;
+	private int saveSpot,timePlayed;
+	public Timer time;
 	private boolean gravitySuit;
 	private boolean closedL1M2;
 	private boolean closedL1M3;
+	private boolean closedL1M20;
+	private boolean closedL1M29;
 	private int gameHints;
 	private boolean dead;
 
@@ -28,9 +36,12 @@ public class GameWorld
 		hero = new GameHero(this);
 		closedL1M2 = true;
 		closedL1M3 = true;
+		closedL1M20 = true;
+		closedL1M29 = true;
 		gameHints = 0;
 		saveSpot = 0;
 		dead = false;
+		time = new Timer(1000/60,this);
 	}
 	
 	public void flip()
@@ -120,6 +131,26 @@ public class GameWorld
 		this.closedL1M3 = closedL1M3;
 	}
 
+	public boolean isClosedL1M20()
+	{
+		return closedL1M20;
+	}
+
+	public void setClosedL1M20(boolean closedL1M20)
+	{
+		this.closedL1M20 = closedL1M20;
+	}
+
+	public boolean isClosedL1M29()
+	{
+		return closedL1M29;
+	}
+
+	public void setClosedL1M29(boolean closedL1M29)
+	{
+		this.closedL1M29 = closedL1M29;
+	}
+
 	public int getGameHints()
 	{
 		return gameHints;
@@ -158,6 +189,22 @@ public class GameWorld
 	public void setDead(boolean dead)
 	{
 		this.dead = dead;
+	}
+
+	public int getTimePlayed()
+	{
+		return timePlayed;
+	}
+
+	public void setTimePlayed(int timePlayed)
+	{
+		this.timePlayed = timePlayed;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0)
+	{
+		timePlayed++;
 	}
 	
 }

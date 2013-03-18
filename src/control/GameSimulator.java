@@ -19,6 +19,7 @@ public class GameSimulator implements ActionListener
 	private GameWorld world;
 	private GameFrame frame;
 	private Timer timer;
+	private int waitTime, counter;
 	
 	public GameSimulator()
 	{
@@ -29,8 +30,8 @@ public class GameSimulator implements ActionListener
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		int waitTime = (int) (10*Math.PI);
-		timer = new Timer(waitTime, this);
+		waitTime = (int) (100*Math.random());
+		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 
@@ -42,7 +43,11 @@ public class GameSimulator implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		timer.stop();
-		frame.loadMap(new MenuPanel(frame,world));
+		counter++;
+		if(counter == waitTime)
+		{	
+			timer.stop();
+			frame.loadMap(new MenuPanel(frame,world));
+		}
 	}
 }

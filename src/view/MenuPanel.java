@@ -92,8 +92,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 		switch(select)
 		{
 			case 0:
-				world.getHero().switchBody();
-				world.setGravitySuit(true);
+				world.time.start();
 				frame.loadMap(new L1M36(world,frame, new Vector2f(300f,320)));
 				break;
 			case 1:

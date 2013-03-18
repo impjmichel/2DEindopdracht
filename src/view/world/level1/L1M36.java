@@ -192,8 +192,8 @@ public class L1M36 extends GameLevel implements ActionListener
 		
 		if(hero2D.getPosition().getX()<0)
 			frame.loadMap(new L1M35(world,frame,new Vector2f(890,world.getY())));
-//		else if(hero2D.getPosition().getX()>900)
-//			frame.loadMap(new L1M37(world,frame, new Vector2f(10f,world.getY())));
+		else if(hero2D.getPosition().getX()>900)
+			frame.loadMap(new L1M37(world,frame, new Vector2f(10f,world.getY())));
 		
 	}
 }
