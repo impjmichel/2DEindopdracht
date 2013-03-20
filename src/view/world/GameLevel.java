@@ -1,5 +1,6 @@
 package view.world;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
@@ -10,14 +11,18 @@ import javax.swing.JPanel;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.shapes.Box;
+import view.GameFrame;
+import view.MenuPanel;
 
 public abstract class GameLevel extends JPanel
 {
 	protected GameWorld world;
+	protected GameFrame frame;
 	
-	public GameLevel(GameWorld world)
+	public GameLevel(GameWorld world, GameFrame frame)
 	{
 		this.world = world;
+		this.frame = frame;
 	}
 	
 	public void up()
@@ -28,10 +33,23 @@ public abstract class GameLevel extends JPanel
 	{
 		world.flip();
 	}
-	public abstract void left();
-	public abstract void right();
+	public void left()
+	{
+		Vector2f left = new Vector2f(-100000f,0);
+		world.getHero().move(left);
+	}
+	public void right()
+	{
+		Vector2f right = new Vector2f(100000f,0);
+		world.getHero().move(right);
+	}
+
 	public abstract void enter();
-	public abstract void escape();
+	public void escape()
+	{
+		world.time.stop();
+		frame.loadMap(new MenuPanel(world,frame));
+	}
 	public abstract void start();
 	public abstract void stop();
 	public void setHeroPosition(Vector2f position)
@@ -80,5 +98,12 @@ public abstract class GameLevel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		if(world.time.isRunning())
+		{
+			Font font = new Font("Monospaced", Font.BOLD, 30);
+			g2.setFont(font);
+			g2.drawString(world.slashPlayed(), 40, 40);
+		}
 	}
 }

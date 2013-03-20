@@ -33,7 +33,7 @@ public class GameFrame extends JFrame implements KeyListener
 		this.world = world;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		defaultKeys = 1;
-		loading = new LoadScreen(this, world);
+		loading = new LoadScreen(world,this);
 		content = loading;
 		setFocusable(true);
 		addKeyListener(this);
@@ -122,9 +122,9 @@ public class GameFrame extends JFrame implements KeyListener
 		private double direction;
 		private Timer timer;
 		
-		public LoadScreen(GameFrame gframe,GameWorld world)
+		public LoadScreen(GameWorld world,GameFrame gframe)
 		{
-			super(world);
+			super(world,gframe);
 			setPreferredSize(new Dimension(900,600));
 			direction = 0;
 			timer = new Timer(1000/60, this);

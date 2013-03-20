@@ -22,17 +22,15 @@ import view.world.GameWorld;
 
 public class ControlPanel extends GameLevel implements ActionListener
 {
-	private GameFrame frame;
 	private String[] s = {"Game controls:","Move with 'A' and 'D'","Switch with 'W' and 'S'","Use 'Enter' to interact.","Move with 'LEFT' and 'RIGHT'","Switch with 'UP' and 'DOWN'","Use 'Space' to interact.","BACK"};
 	private int select, maxSelect;
 	private ArrayList<Shape> shapes;
 	private Timer timer;
 	private int selected;
 	
-	public ControlPanel(GameFrame frame, GameWorld world)
+	public ControlPanel(GameWorld world, GameFrame frame)
 	{
-		super(world);
-		this.frame = frame;
+		super(world,frame);
 		selected = frame.isDefaultKeys();
 		select = 0;
 		maxSelect = 3;
@@ -169,13 +167,13 @@ public class ControlPanel extends GameLevel implements ActionListener
 			frame.setDefaultKeys(1);
 			break;
 		case 2:
-			frame.loadMap(new MenuPanel(frame,world));
+			frame.loadMap(new MenuPanel(world,frame));
 			break;
 		}
 	}
 	public void escape()
 	{
-		frame.loadMap(new MenuPanel(frame,world));
+		frame.loadMap(new MenuPanel(world,frame));
 	}
 
 	@Override

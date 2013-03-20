@@ -19,20 +19,18 @@ import javax.swing.Timer;
 import net.phys2d.math.Vector2f;
 import view.world.GameLevel;
 import view.world.GameWorld;
-import view.world.level1.L1M36;
+import view.world.level1.L1M1;
 
 public class MenuPanel extends GameLevel implements ActionListener
 {
 	private ArrayList<Shape> shapes;
 	private static String[] s = {"Start","Controls","Exit"};
-	private GameFrame frame;
 	private int select, maxSelect;
 	private Timer timer;
 	
-	public MenuPanel(GameFrame frame, GameWorld world)
+	public MenuPanel(GameWorld world, GameFrame frame)
 	{
-		super(world);
-		this.frame = frame;
+		super(world, frame);
 		setPreferredSize(new Dimension(900,600));
 		select = 0;
 		maxSelect = 3;
@@ -42,7 +40,6 @@ public class MenuPanel extends GameLevel implements ActionListener
 			Rectangle2D option = new Rectangle2D.Double(0, 0, 300, 60);
 			shapes.add(option);
 		}
-		
 		timer = new Timer(1000/60, this);
 	}
 	
@@ -93,10 +90,10 @@ public class MenuPanel extends GameLevel implements ActionListener
 		{
 			case 0:
 				world.time.start();
-				frame.loadMap(new L1M36(world,frame, new Vector2f(300f,320)));
+				frame.loadMap(new L1M1(world,frame, new Vector2f(300f,320)));
 				break;
 			case 1:
-				frame.loadMap(new ControlPanel(frame,world));
+				frame.loadMap(new ControlPanel(world,frame));
 				break;
 			case 2:
 				System.exit(0);

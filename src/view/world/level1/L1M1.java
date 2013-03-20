@@ -28,7 +28,6 @@ import view.world.GameWorld;
 public class L1M1 extends GameLevel implements ActionListener
 {
 	private World world2D;
-	private GameFrame frame;
 	private Timer timer;
 	private Body floor,wall1,wall2,roof1,roof2,hero2D;
 	private GameHero hero;
@@ -40,8 +39,7 @@ public class L1M1 extends GameLevel implements ActionListener
 	
 	public L1M1(GameWorld world, GameFrame frame, Vector2f position)
 	{
-		super(world);
-		this.frame = frame;
+		super(world, frame);
 		world2D = world.getWorld2D();
 		world2D.clear();
 		timer = new Timer(1000/60,this);
@@ -116,13 +114,12 @@ public class L1M1 extends GameLevel implements ActionListener
 	@Override
 	public void left()
 	{
+		Vector2f left = new Vector2f(-1000000,0);
+		hero.move(left);
 		if(tutorialEnd)
 		{
 			tutorialMoved = true;
 		}
-		Vector2f left = new Vector2f(-1000000,0);
-		
-		hero.move(left);
 	}
 
 	@Override
@@ -139,12 +136,6 @@ public class L1M1 extends GameLevel implements ActionListener
 	@Override
 	public void enter()
 	{
-	}
-
-	@Override
-	public void escape()
-	{
-		frame.loadMap(new MenuPanel(frame,world));
 	}
 
 	@Override
@@ -187,7 +178,7 @@ public class L1M1 extends GameLevel implements ActionListener
 				world2D.step();
 				validate();
 			}
-			}
+		}
 		repaint();
 		if(hero2D.getPosition().getX()>900)
 		{

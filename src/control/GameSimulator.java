@@ -47,7 +47,7 @@ public class GameSimulator implements ActionListener
 		if(counter == waitTime)
 		{	
 			timer.stop();
-			frame.loadMap(new MenuPanel(frame,world));
+			frame.loadMap(new MenuPanel(world,frame));
 		}
 	}
 }

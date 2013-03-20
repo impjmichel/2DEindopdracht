@@ -41,7 +41,7 @@ public class GameWorld implements ActionListener
 		gameHints = 0;
 		saveSpot = 0;
 		dead = false;
-		time = new Timer(1000/60,this);
+		time = new Timer(1000/100,this);
 	}
 	
 	public void flip()
@@ -207,4 +207,14 @@ public class GameWorld implements ActionListener
 		timePlayed++;
 	}
 	
+	public String slashPlayed()
+	{
+		String s = "";
+		int hundredth = timePlayed%100;
+		int sec = (timePlayed/100)%60;
+		int min = (timePlayed/100/60)%60;
+		int hour = timePlayed/100/60/60;
+		s += hour+":"+min+":"+sec+":"+hundredth;
+		return s;
+	}
 }
