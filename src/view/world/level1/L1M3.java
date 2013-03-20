@@ -145,14 +145,9 @@ public class L1M3 extends GameLevel implements ActionListener
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		
 		g2.setStroke(new BasicStroke(2));
-		
-		g2.setColor(new Color(255,255,255,90));
-		Rectangle2D pc = new Rectangle2D.Double(400,410,100,100);
-		g2.fill(pc);
-		
 		g2.setColor(new Color(40,40,40));
+		
 		drawBox(g2, wall);
 		drawBox(g2, wall2);
 		drawBox(g2, wall3);
@@ -178,18 +173,17 @@ public class L1M3 extends GameLevel implements ActionListener
 			BufferedImage subImg = ((BufferedImage) gSuit).getSubimage(gsX, gsY, 200, 200);
 			g2.drawImage(subImg, 350, 310, 200, 200, null);
 		}
-		else if(flying && !changing && !world.isGravitySuit())
+		hero.drawHero(g2);
+		if(flying && !changing && !world.isGravitySuit())
 		{
 			BufferedImage subImg = ((BufferedImage) gChange).getSubimage(gcX, gcY, 300, 200);
-			g2.drawImage(subImg, 350, 310, 200, 200, null);
+			g2.drawImage(subImg, 300, 310, 300, 200, null);
 		}
-		else if(changing && !world.isGravitySuit())
-		{
-			
-		}
-		
-		hero.drawHero(g2);
-		
+//		if(changing && !world.isGravitySuit())
+//		{
+//			BufferedImage subImg = ((BufferedImage) gCatch).getSubimage(gcX, gcY, 200, 200);
+//			g2.drawImage(subImg, 350, 310, 200, 200, null);
+//		}
 		if(tutorial)
 		{
 			g2.setStroke(new BasicStroke(1));
@@ -313,13 +307,7 @@ public class L1M3 extends GameLevel implements ActionListener
 					world.setGameHints(4);
 					tutorial = false;
 					world.setClosedL1M3(false);
-					world.setGravitySuit(true);
-					world2D.remove(hero2D);
-					hero.switchBody();
-					hero2D = hero.getHeroBody();
-					world2D.add(hero2D);
 					hero.setPaused(false);
-					
 				}
 			}
 		}
@@ -331,21 +319,33 @@ public class L1M3 extends GameLevel implements ActionListener
 				validate();
 			}
 		}
-		if(tutorial)
+		if(tutorial && !world.isGravitySuit())
 			frameCounter++;
+		
 		if(gsX == 800 && gsY == 200)
 		{
 			flying = true;
 			frameCounter = 0;
 			gsX = 0;
 		}
+		if((catchX == 800 && catchY == 200) && !world.isGravitySuit())
+		{
+			catchX = 0;
+			world.setGravitySuit(true);
+			world2D.remove(hero2D);
+			hero.switchBody();
+			hero2D = hero.getHeroBody();
+			world2D.add(hero2D);
+		}
+		
 		if(frameCounter%15 == 14)
 		{
 			if(!flying && !changing)
 			{
+				frameCounter += 2;
 				gsX = (gsX+200)%1000;
 				if(gsX == 0)
-					gsY = (gsY+200)%400;
+					gsY = 200;
 			}
 			else if(flying && !changing)
 			{
@@ -356,7 +356,9 @@ public class L1M3 extends GameLevel implements ActionListener
 			}
 			else if(changing)
 			{
-				
+				catchX = (catchX+200)%1000;
+				if(gcY == 0)
+					catchY = 200;
 			}
 		}
 		
