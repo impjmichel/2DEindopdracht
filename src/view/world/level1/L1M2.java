@@ -98,7 +98,7 @@ public class L1M2 extends GameLevel implements ActionListener
 		if(pcImage != null)
 		{
 			BufferedImage subImg = ((BufferedImage) pcImage).getSubimage(pcX*93, 0, 93, 94);
-		g2.drawImage(subImg, 553, 336, 93, 94, null);
+			g2.drawImage(subImg, 553, 336, 93, 94, null);
 		}
 		hero.drawHero(g2);
 		

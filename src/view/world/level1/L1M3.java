@@ -5,13 +5,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
@@ -39,6 +44,9 @@ public class L1M3 extends GameLevel implements ActionListener
 	private boolean tutorialEnd = false;
 	private int tutorialMoved = 0;
 	private int tutorialX = 920;
+	private Image gSuit, gChange, gCatch;
+	private int gsX, gsY, gcX, gcY, catchX, catchY, frameCounter;
+	private boolean flying, changing;
 	private final String[] s = {"Congratulations","Congratulations...","You have obtained a gravity suit.",
 			"Press up or down to use its functionality.","Press 'W' or 'S' to use its functionality.",
 			"...","Please move on so we can start the testing.","At the end of the course there will be cake.",
@@ -122,6 +130,15 @@ public class L1M3 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);
+		
+		try
+		{
+			gSuit = ImageIO.read(new File("src/view/img/gravity suit200x200.png"));
+			gChange = ImageIO.read(new File("src/view/img/change sprite300x200.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void paintComponent(Graphics g)
@@ -155,6 +172,21 @@ public class L1M3 extends GameLevel implements ActionListener
 		drawBox(g2, roof6);
 		drawBox(g2, roof7);
 		fillBox(g2, door);
+		
+		if(!flying && !changing && !world.isGravitySuit())
+		{
+			BufferedImage subImg = ((BufferedImage) gSuit).getSubimage(gsX, gsY, 200, 200);
+			g2.drawImage(subImg, 350, 310, 200, 200, null);
+		}
+		else if(flying && !changing && !world.isGravitySuit())
+		{
+			BufferedImage subImg = ((BufferedImage) gChange).getSubimage(gcX, gcY, 300, 200);
+			g2.drawImage(subImg, 350, 310, 200, 200, null);
+		}
+		else if(changing && !world.isGravitySuit())
+		{
+			
+		}
 		
 		hero.drawHero(g2);
 		
@@ -251,6 +283,9 @@ public class L1M3 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		
+		
+		
 		if(!world.isClosedL1M3())
 		{
 			if(doorY > 169)
@@ -296,6 +331,37 @@ public class L1M3 extends GameLevel implements ActionListener
 				validate();
 			}
 		}
+		if(tutorial)
+			frameCounter++;
+		if(gsX == 800 && gsY == 200)
+		{
+			flying = true;
+			frameCounter = 0;
+			gsX = 0;
+		}
+		if(frameCounter%15 == 14)
+		{
+			if(!flying && !changing)
+			{
+				gsX = (gsX+200)%1000;
+				if(gsX == 0)
+					gsY = (gsY+200)%400;
+			}
+			else if(flying && !changing)
+			{
+				frameCounter += 9;
+				gcY = (gcY+200)%1000;
+				if(gcY == 0)
+					gcX = (gcX+300)%900;
+			}
+			else if(changing)
+			{
+				
+			}
+		}
+		
+		if(tutorialMoved == 8)
+			changing = true;
 		repaint();
 		if(hero2D.getPosition().getX()<0)
 			frame.loadMap(new L1M2(world,frame,new Vector2f(870f,world.getY())));

@@ -214,7 +214,19 @@ public class GameWorld implements ActionListener
 		int sec = (timePlayed/100)%60;
 		int min = (timePlayed/100/60)%60;
 		int hour = timePlayed/100/60/60;
-		s += hour+":"+min+":"+sec+":"+hundredth;
+		s += hour+":";
+		if(min<10)
+			s += "0"+min+":";
+		else
+			s += min+":";
+		if(sec<10)
+			s += "0"+sec+":";
+		else
+			s += sec+":";
+		if(hundredth<10)
+			s += "0"+hundredth;
+		else
+			s += hundredth;
 		return s;
 	}
 }
