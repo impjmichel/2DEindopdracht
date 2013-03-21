@@ -21,7 +21,6 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameSpike;

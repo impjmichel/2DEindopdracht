@@ -181,12 +181,12 @@ public class L1M6 extends GameLevel implements ActionListener
 				world.setGameHints(6);
 			frame.loadMap(new L1M5(world,frame,new Vector2f(870f,world.getY())));
 		}
-//		else if(hero2D.getPosition().getY() < 0)
-//		{
-//			if(world.getGameHints() == 5)
-//				world.setGameHints(6);
-//			frame.loadMap(new L1M7(world,frame, new Vector2f(world.getX(),10)));
-//		}
+		else if(hero2D.getPosition().getY() < 0)
+		{
+			if(world.getGameHints() == 5)
+				world.setGameHints(6);
+			frame.loadMap(new L1M7(world,frame, new Vector2f(world.getX(),590)));
+		}
 	}
 
 }

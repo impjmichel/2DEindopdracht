@@ -13,7 +13,6 @@ public class GameMovingEnemy
 	private Vector2f startPosition,endPosition, currentPosition, goalPosition;
 	private Body enemy;
 	private GameWorld world;
-	private Vector2f direction;
 	private double randImg;
 
 	public GameMovingEnemy(Vector2f startPosition, Vector2f endPosition, int width, int height, GameWorld world)
@@ -29,7 +28,6 @@ public class GameMovingEnemy
 		enemy.setGravityEffected(false);
 		enemy.setMaxVelocity(20, 20);
 		
-		direction = getDir();
 		randImg = Math.random()*4;
 	}
 

@@ -63,7 +63,6 @@ public class GameWorld implements ActionListener
 		    info = new DataLine.Info(Clip.class, format);
 		    clip = (Clip) AudioSystem.getLine(info);
 		    clip.open(stream);
-		    
 		}
 		catch (Exception e) 
 		{
@@ -93,6 +92,7 @@ public class GameWorld implements ActionListener
 		switch(saveSpot)
 		{
 		case 0: frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
+			setDead(false);
 			break;
 		case 1: // L1 M8
 			break;
@@ -233,7 +233,7 @@ public class GameWorld implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		timePlayed++;
-		if(!clip.isActive())
+		if(!clip.isActive() && gravitySuit)
 		{
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -270,5 +270,4 @@ public class GameWorld implements ActionListener
 			s+= deaths;
 		return s;
 	}
-	
 }
