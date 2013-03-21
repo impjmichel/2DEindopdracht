@@ -21,13 +21,13 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameWorld;
 
 public class L1M36 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body hero2D, roof, floor;
@@ -85,7 +85,7 @@ public class L1M36 extends GameLevel implements ActionListener
 		
 		AffineTransform tr = new AffineTransform();
 		tr.translate(400, 249);
-		tr.scale(.5, .8);
+		tr.scale(.8, .8);
 		
 		if(world.getSaveSpot()==4)
 			g2.drawImage(portalBG, tr, null);
@@ -109,7 +109,7 @@ public class L1M36 extends GameLevel implements ActionListener
 	@Override
 	public void enter()
 	{
-		if(world.getX() > 380 && world.getX() < 500)
+		if(world.getX() > 380 && world.getX() < 520)
 			world.setSaveSpot(4);
 	}
 

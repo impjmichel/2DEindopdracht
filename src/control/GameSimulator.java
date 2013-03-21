@@ -2,17 +2,12 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import view.ControlPanel;
 import view.GameFrame;
 import view.MenuPanel;
-import view.world.GameLevel;
 import view.world.GameWorld;
-import view.world.level1.L1M1;
-import view.world.level1.L1M2;
 
 public class GameSimulator implements ActionListener
 {

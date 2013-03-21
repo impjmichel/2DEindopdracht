@@ -20,13 +20,13 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameWorld;
 
 public class L1M1 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body floor,wall1,wall2,roof1,roof2,hero2D;

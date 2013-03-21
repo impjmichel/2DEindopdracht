@@ -31,6 +31,7 @@ import view.world.GameWorld;
 
 public class L1M3 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body floor,floor2,floor3,

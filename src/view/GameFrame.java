@@ -15,14 +15,12 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import net.phys2d.math.Vector2f;
 import view.world.GameLevel;
 import view.world.GameWorld;
-import view.world.level1.L1M3;
 
 public class GameFrame extends JFrame implements KeyListener
 {
-	private GameWorld world;
+	private static final long	serialVersionUID	= 1L;
 	private GameLevel content;
 	private LoadScreen loading;
 	private int defaultKeys;
@@ -30,7 +28,6 @@ public class GameFrame extends JFrame implements KeyListener
 	public GameFrame(GameWorld world)
 	{
 		super("Gravity Control");
-		this.world = world;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		defaultKeys = 1;
 		loading = new LoadScreen(world,this);
@@ -94,7 +91,6 @@ public class GameFrame extends JFrame implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent ke)
 	{
-		
 	}
 	
 	public void loadMap(GameLevel map)
@@ -119,6 +115,7 @@ public class GameFrame extends JFrame implements KeyListener
 
 	private class LoadScreen extends GameLevel implements ActionListener
 	{
+		private static final long	serialVersionUID	= 1L;
 		private double direction;
 		private Timer timer;
 		

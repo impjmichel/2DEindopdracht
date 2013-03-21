@@ -22,6 +22,7 @@ import view.world.GameWorld;
 
 public class ControlPanel extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private String[] s = {"Game controls:","Move with 'A' and 'D'","Switch with 'W' and 'S'","Use 'Enter' to interact.","Move with 'LEFT' and 'RIGHT'","Switch with 'UP' and 'DOWN'","Use 'Space' to interact.","BACK"};
 	private int select, maxSelect;
 	private ArrayList<Shape> shapes;
@@ -144,15 +145,11 @@ public class ControlPanel extends GameLevel implements ActionListener
 	@Override
 	public void left()
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void right()
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

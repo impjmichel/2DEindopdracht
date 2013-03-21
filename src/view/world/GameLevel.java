@@ -16,6 +16,7 @@ import view.MenuPanel;
 
 public abstract class GameLevel extends JPanel
 {
+	private static final long	serialVersionUID	= 1L;
 	protected GameWorld world;
 	protected GameFrame frame;
 	

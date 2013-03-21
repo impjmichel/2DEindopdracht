@@ -17,6 +17,7 @@ import net.phys2d.raw.strategies.QuadSpaceStrategy;
 import view.GameFrame;
 import view.world.level1.L1M3;
 import view.world.level1.L1M36;
+import view.world.level1.L1M6;
 
 public class GameWorld implements ActionListener
 {
@@ -47,8 +48,8 @@ public class GameWorld implements ActionListener
 		deaths = 0;
 		closedL1M2 = true;
 		closedL1M3 = true;
-		closedL1M20 = true;
-		closedL1M29 = true;
+		closedL1M20 = false;
+		closedL1M29 = false;
 		gameHints = 0;
 		saveSpot = 0;
 		dead = false;
@@ -94,13 +95,15 @@ public class GameWorld implements ActionListener
 		case 0: frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
 			setDead(false);
 			break;
-		case 1: // L1 M8
+		case 1: frame.loadMap(new L1M6(this,frame,new Vector2f(740,360)));
 			break;
-		case 2: // L1 M18
+		case 2: // L1 M8
 			break;
-		case 3: // L1 M23
+		case 3: // L1 M18
 			break;
 		case 4: frame.loadMap(new L1M36(this,frame,new Vector2f(425,300)));
+			break;
+		case 5: // L1 M23
 			break;
 		}
 	}
@@ -269,5 +272,10 @@ public class GameWorld implements ActionListener
 		if(deaths > 0)
 			s+= deaths;
 		return s;
+	}
+	
+	public int getDeathCount()
+	{
+		return deaths;
 	}
 }

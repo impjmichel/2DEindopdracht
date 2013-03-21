@@ -5,12 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -28,6 +25,7 @@ import view.world.GameWorld;
 
 public class L1M7 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body hero2D,roof,roof2,roof3,roof4,roof5,roof6,floor,floor2,floor3,floor4,
@@ -154,6 +152,17 @@ public class L1M7 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);		
+		
+		//-------PROGRESS-KILLER----------------------------
+		for(int i = 0; i < 5; i++)
+		{
+			spike = new GameSpike(new Vector2f(530,80+20*i), world);
+			spikey = spike.getBody();
+			spikey.adjustRotation((float) (Math.PI/2)*3);
+			spikes.add(spike);
+			world2D.add(spikey);
+		}
+		//-------PROGRESS-KILLER----------------------------
 	}
 	
 	public void paintComponent(Graphics g)
@@ -188,6 +197,25 @@ public class L1M7 extends GameLevel implements ActionListener
 				spikey.drawSpike(g2);
 		}
 		hero.drawHero(g2);
+		
+		//-------PROGRESS-KILLER----------------------------
+		Font font = new Font("Monospaced", Font.BOLD, 30);
+		g2.setFont(font);
+		String[] s = {"work in progress work in progress work","s work in progress work in progress wor",
+				"ss work in progress work in progress wo","ess work in progress work in progress w",
+				"ress work in progress work in progress ","gress work in progress work in progress",
+				"ogress work in progress work in progres","rogress work in progress work in progre",
+				"progress work in progress work in progr"," progress work in progress work in prog",
+				"n progress work in progress work in pro","in progress work in progress work in pr",
+				" in progress work in progress work in p","k in progress work in progress work in ",
+				"rk in progress work in progress work in","ork in progress work in progress work i",
+				"work in progress work in progress work "," work in progress work in progress work",
+				"s work in progress work in progress wor","ss work in progress work in progress wo",};
+		double rotate2 = -Math.PI/4;
+		g2.setFont(g2.getFont().deriveFont(AffineTransform.getRotateInstance(rotate2)));
+		for(int i = 0; i < 20; i++)
+			g2.drawString(s[i], 0, 0+60*i);
+		//-------PROGRESS-KILLER----------------------------
 	}
 
 	@Override

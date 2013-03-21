@@ -2,11 +2,22 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
@@ -22,12 +33,21 @@ import view.world.GameWorld;
 
 public class L1M6 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private Timer timer;
 	private World world2D;
 	private Body hero2D, roof,roof2,roof3,roof4,roof5,roof6,floor,floor2,floor3,floor4,
 				 wall,wall2,wall3,wall4,wall5,wall6,wall7,wall8,wall9,wall10;
 	private GameMovingEnemy enemy1,enemy2,enemy3;
 	private GameHero hero;
+	private int deadCounter,imgX,imgY;
+	private boolean gettingUp;
+	private Image portal,portalBG,portalBG2;
+	private final String[] s = {"","You just activated a so called...","\"Organic Matrix Reproduction Unit\".","Most likely you wouldn't understand it.",""};
+	private boolean tutorial = false;
+	private boolean tutorialEnd = false;
+	private int tutorialMoved = 0;
+	private int tutorialX = 920;
 	
 	public L1M6(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -35,6 +55,10 @@ public class L1M6 extends GameLevel implements ActionListener
 		world2D = world.getWorld2D();
 		world2D.clear();
 		timer = new Timer(1000/60,this);
+		deadCounter = 1;
+		imgX = 0;
+		imgY = 0;
+		gettingUp = false;
 		
 		roof = new StaticBody("", new Box(240f,40f));
 		roof.setPosition(100f, 40);
@@ -111,6 +135,16 @@ public class L1M6 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);	
+		
+		try
+		{
+			portal = ImageIO.read(new File("src/view/img/portal160x165.png"));
+			portalBG = ImageIO.read(new File("src/view/img/portal bg.png"));
+			portalBG2 = ImageIO.read(new File("src/view/img/portal bg2.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void paintComponent(Graphics g)
@@ -140,15 +174,80 @@ public class L1M6 extends GameLevel implements ActionListener
 		drawBox(g2, wall8);
 		drawBox(g2, wall9);
 		drawBox(g2, wall10);
-		hero.drawHero(g2);
 		enemy1.drawEnemy(g2);
 		enemy2.drawEnemy(g2);
 		enemy3.drawEnemy(g2);
+		
+		AffineTransform tr = new AffineTransform();
+		tr.translate(690, 309);
+		tr.scale(.8, .8);
+		
+		if(world.getSaveSpot()==1)
+			g2.drawImage(portalBG, tr, null);
+		else
+			g2.drawImage(portalBG2, tr, null);
+
+		if(world.isDead())
+		{
+			Image subImg = ((BufferedImage) portal).getSubimage(160*imgX, 165*imgY, 160, 165);
+			g2.drawImage(subImg, tr, null);
+		}
+		if(gettingUp)
+		{
+			Image subImg = ((BufferedImage) portal).getSubimage(160*imgX, 165*imgY, 160, 165);
+			g2.drawImage(subImg, tr, null);
+		}
+		if(!world.isDead())
+			hero.drawHero(g2);
+		
+		if(tutorial)
+		{
+			g2.setStroke(new BasicStroke(1));
+			g2.setColor(new Color(0,0,0,180));
+			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
+			g2.setColor(new Color(200,200,200,255));
+			Font font = new Font("Monospaced", Font.BOLD, 30);
+			g2.setFont(font);
+			FontRenderContext frc = g2.getFontRenderContext();
+			GlyphVector gv = font.createGlyphVector(frc, "");
+			if(tutorialMoved == 1)
+				gv = font.createGlyphVector(frc, s[0]);
+			else if(tutorialMoved == 2)
+				gv = font.createGlyphVector(frc, s[1]);
+			else if(tutorialMoved == 3)
+				gv = font.createGlyphVector(frc, s[2]);
+			else if(tutorialMoved == 4)
+				gv = font.createGlyphVector(frc, s[3]);
+			else if(tutorialMoved == 5)
+				gv = font.createGlyphVector(frc, s[4]);
+
+			Shape glyph = gv.getOutline(35,310);
+			g2.setColor(new Color(220,220,220,255));
+			g2.fill(glyph);
+			g2.setColor(new Color(0,0,0,255));
+			g2.draw(glyph);
+		}
 	}
 	
 	@Override
 	public void enter()
 	{
+		if(tutorialEnd && hero.isPaused())
+		{
+			if(tutorialX > -10)
+				tutorialMoved ++;
+		}
+		if(world.getX() > 670 && world.getX() < 840)
+		{
+			if(world.getY() > 310)
+			{
+				world.setSaveSpot(1);
+				if(world.getGameHints() == 6)
+				{
+					world.setGameHints(7);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -166,10 +265,63 @@ public class L1M6 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		for(int i=0; i<5; i++) 
+		if(world.getGameHints() == 7)
 		{
-			world2D.step();
-			validate();
+			tutorial = true;
+			hero.setPaused(true);
+			if(tutorialX  > 0)
+			{
+				tutorialX -= 25;
+				tutorialEnd = true;
+			}
+			if(tutorialMoved > 0)
+				tutorialEnd = true;
+			if(tutorialMoved == 5)
+			{
+				tutorialX-= 25;
+				if(tutorialX < -930)
+				{
+					world.setGameHints(8);
+					tutorial = false;
+					hero.setPaused(false);
+				}
+			}
+		}
+		
+		if(world.isDead() || gettingUp)
+			deadCounter++;
+		if(!world.isDead() && !tutorial)
+		{
+			for(int i=0; i<5; i++) 
+			{
+				world2D.step();
+				validate();
+			}
+		}
+		else
+		{
+			if(deadCounter%8 == 0)
+			{
+				imgX = (imgX+1)%5;
+				if(imgX == 0)
+					imgY = (imgY+1)%3;
+			}
+			if(imgY == 2 && imgX == 4)
+			{
+				deadCounter = 0;
+				gettingUp = true;
+				imgX = 0;
+			}
+		}
+		if(gettingUp)
+		{
+			imgY = 3;
+			if(deadCounter%25 == 24)
+				imgX++;
+			if(imgX == 2)
+				world.setDead(false);
+			if(imgX == 4)
+				gettingUp = false;
 		}
 		enemy1.update();
 		enemy2.update();
@@ -188,5 +340,4 @@ public class L1M6 extends GameLevel implements ActionListener
 			frame.loadMap(new L1M7(world,frame, new Vector2f(world.getX(),590)));
 		}
 	}
-
 }

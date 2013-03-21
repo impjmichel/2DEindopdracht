@@ -18,7 +18,6 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameSpike;
@@ -26,6 +25,7 @@ import view.world.GameWorld;
 
 public class L1M21 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body floor,floor2,floor3,floor4,floor5,wall,wall2,wall3,wall4,wall5,wall6,wall7,roof,roof2,roof3,hero2D;

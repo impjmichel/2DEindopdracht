@@ -14,7 +14,6 @@ import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.World;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameSpike;
@@ -22,6 +21,7 @@ import view.world.GameWorld;
 
 public class L1M34 extends GameLevel implements ActionListener
 {
+	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
 	private Body hero2D;
