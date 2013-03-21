@@ -104,6 +104,7 @@ public abstract class GameLevel extends JPanel
 			Font font = new Font("Monospaced", Font.BOLD, 30);
 			g2.setFont(font);
 			g2.drawString(world.slashPlayed(), 730, 20);
+			g2.drawString(world.getDeaths(), 0, 20);
 		}
 	}
 }

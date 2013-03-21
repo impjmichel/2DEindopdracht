@@ -97,7 +97,16 @@ public class GameMovingEnemy
 		g2.drawLine((int) p4.x,(int) p4.y,(int) p1.x,(int) p1.y);
 		
 		BodyList list = enemy.getTouching();
-//		if(list.contains(world.getHero().getHeroBody()))
-//			world.killHero();
+		if(list.contains(world.getHero().getHeroBody()))
+		{
+			try
+			{
+				Thread.sleep(1200);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			world.killHero();
+		}
 	}
 }

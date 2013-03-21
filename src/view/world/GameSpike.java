@@ -79,6 +79,15 @@ public class GameSpike
 		
 		BodyList list = spike.getTouching();
 		if(list.contains(world.getHero().getHeroBody()))
+		{
+			try
+			{
+				Thread.sleep(600);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 			world.killHero();
+		}
 	}
 }

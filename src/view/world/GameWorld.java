@@ -2,7 +2,13 @@ package view.world;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
@@ -18,7 +24,7 @@ public class GameWorld implements ActionListener
 	private Vector2f gravity;
 	private GameHero hero;
 	private GameFrame frame;
-	private int saveSpot,timePlayed;
+	private int saveSpot,timePlayed, deaths;
 	public Timer time;
 	private boolean gravitySuit;
 	private boolean closedL1M2;
@@ -27,6 +33,10 @@ public class GameWorld implements ActionListener
 	private boolean closedL1M29;
 	private int gameHints;
 	private boolean dead;
+	private AudioInputStream stream;
+    private AudioFormat format;
+    private DataLine.Info info;
+    private Clip clip;
 
 	public GameWorld()
 	{
@@ -34,6 +44,7 @@ public class GameWorld implements ActionListener
 		gravity = new Vector2f(.0f,30.0f);
 		world2D = new World(gravity,10,new QuadSpaceStrategy(20,5));
 		hero = new GameHero(this);
+		deaths = 0;
 		closedL1M2 = true;
 		closedL1M3 = true;
 		closedL1M20 = true;
@@ -42,6 +53,23 @@ public class GameWorld implements ActionListener
 		saveSpot = 0;
 		dead = false;
 		time = new Timer(1000/100,this);
+
+		try 
+		{
+		    File soundFile = new File("src/view/sound/8 Bit Portal - Still Alive.wav");
+
+		    stream = AudioSystem.getAudioInputStream(soundFile);
+		    format = stream.getFormat();
+		    info = new DataLine.Info(Clip.class, format);
+		    clip = (Clip) AudioSystem.getLine(info);
+		    clip.open(stream);
+		    
+		}
+		catch (Exception e) 
+		{
+		    e.printStackTrace();
+		}
+		
 	}
 	
 	public void flip()
@@ -61,7 +89,7 @@ public class GameWorld implements ActionListener
 	public void killHero()
 	{
 		setDead(true);
-		
+		deaths++;
 		switch(saveSpot)
 		{
 		case 0: frame.loadMap(new L1M3(this,frame,new Vector2f(450,400)));
@@ -205,6 +233,11 @@ public class GameWorld implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		timePlayed++;
+		if(!clip.isActive())
+		{
+			clip.start();
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+		}
 	}
 	
 	public String slashPlayed()
@@ -229,4 +262,13 @@ public class GameWorld implements ActionListener
 			s += hundredth;
 		return s;
 	}
+
+	public String getDeaths()
+	{
+		String s = "";
+		if(deaths > 0)
+			s+= deaths;
+		return s;
+	}
+	
 }
