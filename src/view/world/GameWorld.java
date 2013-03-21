@@ -2,7 +2,6 @@ package view.world;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -18,6 +17,8 @@ import view.GameFrame;
 import view.world.level1.L1M3;
 import view.world.level1.L1M36;
 import view.world.level1.L1M6;
+import view.world.level1.L1M8;
+import control.GameSimulator;
 
 public class GameWorld implements ActionListener
 {
@@ -57,9 +58,7 @@ public class GameWorld implements ActionListener
 
 		try 
 		{
-		    File soundFile = new File("src/view/sound/8 Bit Portal - Still Alive.wav");
-
-		    stream = AudioSystem.getAudioInputStream(soundFile);
+		    stream = AudioSystem.getAudioInputStream(GameSimulator.class.getResource("/8 Bit Portal - Still Alive.wav"));
 		    format = stream.getFormat();
 		    info = new DataLine.Info(Clip.class, format);
 		    clip = (Clip) AudioSystem.getLine(info);
@@ -97,7 +96,7 @@ public class GameWorld implements ActionListener
 			break;
 		case 1: frame.loadMap(new L1M6(this,frame,new Vector2f(740,360)));
 			break;
-		case 2: // L1 M8
+		case 2: frame.loadMap(new L1M8(this,frame,new Vector2f(120,500)));
 			break;
 		case 3: // L1 M18
 			break;

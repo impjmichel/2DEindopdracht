@@ -6,7 +6,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -35,8 +34,8 @@ public class GameHero
 		
 		try
 		{
-			cube = ImageIO.read(new File("src/view/img/cube.png"));
-			stickman = ImageIO.read(new File("src/view/img/man50x80.png"));
+			cube = ImageIO.read(GameHero.class.getResource("/cube.png"));
+			stickman = ImageIO.read(GameHero.class.getResource("/man50x80.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -64,7 +63,7 @@ public class GameHero
 			body.setRestitution(0.6f);
 			body.setFriction(0.5f);
 			body.setRotatable(true);
-			body.setMaxVelocity(40, 100);
+			body.setMaxVelocity(40, 80);
 		}
 		else
 		{
@@ -73,7 +72,7 @@ public class GameHero
 			body.setRestitution(0.7f);
 			body.setFriction(0.6f);
 			body.setRotatable(false);
-			body.setMaxVelocity(50, 100);
+			body.setMaxVelocity(50, 80);
 		}
 	}
 	

@@ -13,7 +13,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -76,7 +75,7 @@ public class L1M2 extends GameLevel implements ActionListener
 		
 		try
 		{
-			pcImage = ImageIO.read(new File("src/view/img/pc93.png"));
+			pcImage = ImageIO.read(L1M2.class.getResource("/pc93.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();

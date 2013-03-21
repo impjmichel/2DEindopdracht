@@ -13,12 +13,32 @@ public class GameMovingEnemy
 	private Vector2f startPosition,endPosition, currentPosition, goalPosition;
 	private Body enemy;
 	private GameWorld world;
+	private float speed;
 //	private double randImg;
 
+	public GameMovingEnemy(Vector2f startPosition, Vector2f endPosition, int width, int height, float speed, GameWorld world)
+	{
+		this.startPosition = startPosition;
+		this.endPosition = endPosition;
+		this.speed = speed;
+		this.world = world;
+		currentPosition = startPosition;
+		goalPosition = endPosition;
+		enemy = new StaticBody("enemy", new Box(width,height));
+		enemy.setPosition(currentPosition.x, currentPosition.y);
+
+		enemy.setGravityEffected(false);
+		enemy.setMaxVelocity(20, 20);
+		
+		//TODO implement once multiple images exist
+//		randImg = Math.random()*4;
+	}
+	
 	public GameMovingEnemy(Vector2f startPosition, Vector2f endPosition, int width, int height, GameWorld world)
 	{
 		this.startPosition = startPosition;
 		this.endPosition = endPosition;
+		speed = 1;
 		this.world = world;
 		currentPosition = startPosition;
 		goalPosition = endPosition;
@@ -54,16 +74,16 @@ public class GameMovingEnemy
 	
 	public Vector2f getDir()
 	{
-		int x = (int) (goalPosition.x-currentPosition.x);
-		int y = (int) (goalPosition.y-currentPosition.y);
+		float x = (int) (goalPosition.x-currentPosition.x);
+		float y = (int) (goalPosition.y-currentPosition.y);
 		if(x < 0)
-			x = -1;
+			x = -speed;
 		else if(x > 0)
-			x = 1;
+			x = speed;
 		if(y < 0)
-			y = -1;
+			y = -speed;
 		else if(y > 0)
-			y = 1;	
+			y = speed;	
 		if(x == 0 && y == 0)
 		{
 			if(goalPosition == startPosition)

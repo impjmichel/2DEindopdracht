@@ -23,7 +23,7 @@ import view.world.level1.L1M1;
 
 public class MenuPanel extends GameLevel implements ActionListener
 {
-	private static final long	serialVersionUID	= -1886597397354352197L;
+	private static final long	serialVersionUID	= 1L;
 	private ArrayList<Shape> shapes;
 	private static String[] s = {"Start","Controls","Exit"};
 	private int select, maxSelect;
@@ -91,8 +91,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 		{
 			case 0:
 				world.time.start();
-				world.setGravitySuit(true);
-				frame.loadMap(new L1M1(world,frame, new Vector2f(700f,320)));
+				frame.loadMap(new L1M1(world,frame, new Vector2f(300f,320)));
 				break;
 			case 1:
 				frame.loadMap(new ControlPanel(world,frame));

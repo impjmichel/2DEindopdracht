@@ -2,12 +2,10 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -91,18 +89,8 @@ public class L1M7 extends GameLevel implements ActionListener
 			spikes.add(spike);
 			world2D.add(spikey);
 		}
-		spike = new GameSpike(new Vector2f(500,543), world);
-		Body spikey = spike.getBody();
-		spikey.adjustRotation((float) Math.PI);
-		spikes.add(spike);
-		world2D.add(spikey);
-		spike = new GameSpike(new Vector2f(480,543), world);
-		spikey = spike.getBody();
-		spikey.adjustRotation((float) Math.PI);
-		spikes.add(spike);
-		world2D.add(spikey);
 		spike = new GameSpike(new Vector2f(690,463), world);
-		spikey = spike.getBody();
+		Body spikey = spike.getBody();
 		spikey.adjustRotation((float) Math.PI);
 		spikes.add(spike);
 		world2D.add(spikey);
@@ -152,17 +140,6 @@ public class L1M7 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);		
-		
-		//-------PROGRESS-KILLER----------------------------
-		for(int i = 0; i < 5; i++)
-		{
-			spike = new GameSpike(new Vector2f(530,80+20*i), world);
-			spikey = spike.getBody();
-			spikey.adjustRotation((float) (Math.PI/2)*3);
-			spikes.add(spike);
-			world2D.add(spikey);
-		}
-		//-------PROGRESS-KILLER----------------------------
 	}
 	
 	public void paintComponent(Graphics g)
@@ -197,25 +174,6 @@ public class L1M7 extends GameLevel implements ActionListener
 				spikey.drawSpike(g2);
 		}
 		hero.drawHero(g2);
-		
-		//-------PROGRESS-KILLER----------------------------
-		Font font = new Font("Monospaced", Font.BOLD, 30);
-		g2.setFont(font);
-		String[] s = {"work in progress work in progress work","s work in progress work in progress wor",
-				"ss work in progress work in progress wo","ess work in progress work in progress w",
-				"ress work in progress work in progress ","gress work in progress work in progress",
-				"ogress work in progress work in progres","rogress work in progress work in progre",
-				"progress work in progress work in progr"," progress work in progress work in prog",
-				"n progress work in progress work in pro","in progress work in progress work in pr",
-				" in progress work in progress work in p","k in progress work in progress work in ",
-				"rk in progress work in progress work in","ork in progress work in progress work i",
-				"work in progress work in progress work "," work in progress work in progress work",
-				"s work in progress work in progress wor","ss work in progress work in progress wo",};
-		double rotate2 = -Math.PI/4;
-		g2.setFont(g2.getFont().deriveFont(AffineTransform.getRotateInstance(rotate2)));
-		for(int i = 0; i < 20; i++)
-			g2.drawString(s[i], 0, 0+60*i);
-		//-------PROGRESS-KILLER----------------------------
 	}
 
 	@Override
@@ -244,8 +202,8 @@ public class L1M7 extends GameLevel implements ActionListener
 			validate();
 		}
 		repaint();
-//		if(hero2D.getPosition().getX()<0)
-//			frame.loadMap(new L1M8(world,frame,new Vector2f(870f,world.getY())));
+		if(hero2D.getPosition().getX()<0)
+			frame.loadMap(new L1M8(world,frame,new Vector2f(870f,world.getY())));
 		if(hero2D.getPosition().getY()>600)
 			frame.loadMap(new L1M6(world,frame, new Vector2f(world.getX(),10)));
 	}

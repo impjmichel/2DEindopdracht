@@ -14,7 +14,6 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -138,9 +137,9 @@ public class L1M6 extends GameLevel implements ActionListener
 		
 		try
 		{
-			portal = ImageIO.read(new File("src/view/img/portal160x165.png"));
-			portalBG = ImageIO.read(new File("src/view/img/portal bg.png"));
-			portalBG2 = ImageIO.read(new File("src/view/img/portal bg2.png"));
+			portal = ImageIO.read(L1M6.class.getResource("/portal160x165.png"));
+			portalBG = ImageIO.read(L1M6.class.getResource("/portal bg.png"));
+			portalBG2 = ImageIO.read(L1M6.class.getResource("/portal bg2.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();

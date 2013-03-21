@@ -13,7 +13,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -133,9 +132,9 @@ public class L1M3 extends GameLevel implements ActionListener
 		
 		try
 		{
-			gSuit = ImageIO.read(new File("src/view/img/gravity suit200x200.png"));
-			gChange = ImageIO.read(new File("src/view/img/change sprite300x200.png"));
-			gCatch = ImageIO.read(new File("src/view/img/catching200x200.png"));
+			gSuit = ImageIO.read(L1M3.class.getResource("/gravity suit200x200.png"));
+			gChange = ImageIO.read(L1M3.class.getResource("/change sprite300x200.png"));
+			gCatch = ImageIO.read(L1M3.class.getResource("/catching200x200.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
