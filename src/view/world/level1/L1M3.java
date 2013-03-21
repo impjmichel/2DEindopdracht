@@ -25,7 +25,6 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
 import view.world.GameWorld;
@@ -135,6 +134,7 @@ public class L1M3 extends GameLevel implements ActionListener
 		{
 			gSuit = ImageIO.read(new File("src/view/img/gravity suit200x200.png"));
 			gChange = ImageIO.read(new File("src/view/img/change sprite300x200.png"));
+			gCatch = ImageIO.read(new File("src/view/img/catching200x200.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -177,13 +177,13 @@ public class L1M3 extends GameLevel implements ActionListener
 		if(flying && !changing && !world.isGravitySuit())
 		{
 			BufferedImage subImg = ((BufferedImage) gChange).getSubimage(gcX, gcY, 300, 200);
-			g2.drawImage(subImg, 300, 310, 300, 200, null);
+			g2.drawImage(subImg, (int)hero2D.getPosition().getX()-150, 310, 300, 200, null);
 		}
-//		if(changing && !world.isGravitySuit())
-//		{
-//			BufferedImage subImg = ((BufferedImage) gCatch).getSubimage(gcX, gcY, 200, 200);
-//			g2.drawImage(subImg, 350, 310, 200, 200, null);
-//		}
+		if(changing && !world.isGravitySuit())
+		{
+			BufferedImage subImg = ((BufferedImage) gCatch).getSubimage(catchX, catchY, 200, 200);
+			g2.drawImage(subImg, (int)hero2D.getPosition().getX()-100, 320, 200, 200, null);
+		}
 		if(tutorial)
 		{
 			g2.setStroke(new BasicStroke(1));
@@ -227,6 +227,11 @@ public class L1M3 extends GameLevel implements ActionListener
 			{
 				gv = font.createGlyphVector(frc, s[11]);
 				gv2 = font.createGlyphVector(frc, s[12]);
+				world.setGravitySuit(true);
+				world2D.remove(hero2D);
+				hero.switchBody();
+				hero2D = hero.getHeroBody();
+				world2D.add(hero2D);
 			}
 			Shape glyph = gv.getOutline(35,310);
 			Shape glyph2 = gv2.getOutline(35,340);
@@ -277,9 +282,6 @@ public class L1M3 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		
-		
-		
 		if(!world.isClosedL1M3())
 		{
 			if(doorY > 169)
@@ -328,14 +330,11 @@ public class L1M3 extends GameLevel implements ActionListener
 			frameCounter = 0;
 			gsX = 0;
 		}
-		if((catchX == 800 && catchY == 200) && !world.isGravitySuit())
+		
+		if(catchX == 800 && catchY == 200)
 		{
+			System.out.println("hey!");
 			catchX = 0;
-			world.setGravitySuit(true);
-			world2D.remove(hero2D);
-			hero.switchBody();
-			hero2D = hero.getHeroBody();
-			world2D.add(hero2D);
 		}
 		
 		if(frameCounter%15 == 14)
@@ -357,13 +356,16 @@ public class L1M3 extends GameLevel implements ActionListener
 			else if(changing)
 			{
 				catchX = (catchX+200)%1000;
-				if(gcY == 0)
+				if(catchX == 0)
 					catchY = 200;
 			}
 		}
 		
 		if(tutorialMoved == 8)
+		{
 			changing = true;
+			frameCounter = 0;
+		}
 		repaint();
 		if(hero2D.getPosition().getX()<0)
 			frame.loadMap(new L1M2(world,frame,new Vector2f(870f,world.getY())));

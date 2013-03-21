@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import javax.swing.Timer;
 
@@ -21,10 +20,8 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import view.GameFrame;
-import view.MenuPanel;
 import view.world.GameHero;
 import view.world.GameLevel;
-import view.world.GameSpike;
 import view.world.GameWorld;
 
 public class L1M5 extends GameLevel implements ActionListener
@@ -181,12 +178,12 @@ public class L1M5 extends GameLevel implements ActionListener
 				world.setGameHints(6);
 			frame.loadMap(new L1M4(world,frame,new Vector2f(870f,world.getY())));
 		}
-//		else if(hero2D.getPosition().getX()>900)
-//		{
-//			if(world.getGameHints() == 5)
-//				world.setGameHints(6);
-//			frame.loadMap(new L1M6(world,frame, new Vector2f(10f,world.getY())));
-//		}
+		else if(hero2D.getPosition().getX()>900)
+		{
+			if(world.getGameHints() == 5)
+				world.setGameHints(6);
+			frame.loadMap(new L1M6(world,frame, new Vector2f(10f,world.getY())));
+		}
 		else if(hero2D.getPosition().getY()>600)
 		{
 			if(world.getGameHints() == 5)

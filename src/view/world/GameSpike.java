@@ -7,7 +7,6 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.BodyList;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.shapes.Box;
-import view.GameFrame;
 
 public class GameSpike
 {
