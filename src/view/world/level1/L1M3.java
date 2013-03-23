@@ -336,10 +336,7 @@ public class L1M3 extends GameLevel implements ActionListener
 		}
 		
 		if(catchX == 800 && catchY == 200)
-		{
-			System.out.println("hey!");
 			catchX = 0;
-		}
 		
 		if(frameCounter%15 == 14)
 		{

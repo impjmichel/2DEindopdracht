@@ -15,13 +15,16 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import net.phys2d.math.Vector2f;
+
 import view.world.GameLevel;
 import view.world.GameWorld;
+import view.world.level1.L1M1;
 
 public class GameFrame extends JFrame implements KeyListener
 {
 	private static final long	serialVersionUID	= 1L;
-	private GameLevel content;
+	private GameLevel content,previousMap;
 	private LoadScreen loading;
 	private int leftKey,rightKey,switchKey,enterKey,selectedKey;
 	private boolean keybinding = false;
@@ -40,6 +43,7 @@ public class GameFrame extends JFrame implements KeyListener
 		rightKey = KeyEvent.VK_RIGHT;
 		switchKey = KeyEvent.VK_Z;
 		enterKey = KeyEvent.VK_SPACE;
+		previousMap = new L1M1(world,this, new Vector2f(400f,320));
 	}
 
 	@Override
@@ -82,6 +86,10 @@ public class GameFrame extends JFrame implements KeyListener
 	
 	public void loadMap(GameLevel map)
 	{
+		if(!content.getClass().equals(MenuPanel.class) &&
+		   !content.getClass().equals(AdvancedControlPanel.class) &&
+		   !content.getClass().equals(LoadScreen.class))
+			previousMap = content;
 		content.stop();
 		content = map;
 		setContentPane(content);
@@ -212,6 +220,11 @@ public class GameFrame extends JFrame implements KeyListener
 		}
 	}
 	
+	public GameLevel getPreviousMap()
+	{
+		return previousMap;
+	}
+
 	private class LoadScreen extends GameLevel implements ActionListener
 	{
 		private static final long	serialVersionUID	= 1L;

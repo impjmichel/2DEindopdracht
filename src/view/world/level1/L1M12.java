@@ -26,6 +26,7 @@ public class L1M12 extends GameLevel implements ActionListener
 	private Timer timer;
 	private Body hero2D,roof,floor,
 				 wall,wall2,wall3,wall4;
+	private Body pk;
 	private GameHero hero;
 	
 	public L1M12(GameWorld world, GameFrame frame, Vector2f position)
@@ -51,6 +52,14 @@ public class L1M12 extends GameLevel implements ActionListener
 		wall3.setPosition(720f, 586);
 		wall4 = new StaticBody("", new Box(40f,79f));
 		wall4.setPosition(880, 586);
+		
+		//progrss killer
+	//-----------------------------------------------------------------------------
+		pk = new StaticBody("", new Box(1200f,40f));
+		pk.setPosition(450, 580);
+		world2D.add(pk);
+	//-----------------------------------------------------------------------------
+		//progress killer
 		
 		world2D.add(roof);
 		world2D.add(floor);
@@ -79,6 +88,12 @@ public class L1M12 extends GameLevel implements ActionListener
 		drawBox(g2, wall3);
 		drawBox(g2, wall4);
 		hero.drawHero(g2);
+		
+		//progrss killer
+	//-----------------------------------------------------------------------------
+			drawBox(g2, pk);
+	//-----------------------------------------------------------------------------
+		//progress killer
 	}
 
 	@Override

@@ -16,10 +16,8 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import net.phys2d.math.Vector2f;
 import view.world.GameLevel;
 import view.world.GameWorld;
-import view.world.level1.L1M1;
 
 public class MenuPanel extends GameLevel implements ActionListener
 {
@@ -91,7 +89,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 		{
 			case 0:
 				world.time.start();
-				frame.loadMap(new L1M1(world,frame, new Vector2f(400f,320)));
+				frame.loadMap(frame.getPreviousMap());
 				break;
 			case 1:
 				frame.loadMap(new AdvancedControlPanel(world,frame));
