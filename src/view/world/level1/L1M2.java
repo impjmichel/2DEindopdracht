@@ -23,6 +23,7 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import view.AdvancedControlPanel;
 import view.GameFrame;
 import view.world.GameHero;
 import view.world.GameLevel;
@@ -40,7 +41,7 @@ public class L1M2 extends GameLevel implements ActionListener
 	private boolean tutorialEnd = false;
 	private boolean tutorialMoved = false;
 	private int tutorialX = 920;
-	private final String[] s = {"Interact with objects by pressing Space","Interact with objects by pressing Enter"};
+	private String s;
 	private Image pcImage;
 	private int pcX;
 	private int pcCounter;
@@ -80,7 +81,9 @@ public class L1M2 extends GameLevel implements ActionListener
 		{
 			e.printStackTrace();
 		}
-		
+		AdvancedControlPanel p = new AdvancedControlPanel(world, frame);
+		String str = p.getKeyString(frame.getEnterKey());
+		s = "Interact with objects by pressing "+str;
 	}
 	
 	public void paintComponent(Graphics g)
@@ -107,15 +110,12 @@ public class L1M2 extends GameLevel implements ActionListener
 			g2.setColor(new Color(0,0,0,180));
 			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
 			g2.setColor(new Color(200,200,200,255));
-			Font font = new Font("Serif", Font.BOLD, 50);
+			Font font = new Font("Serif", Font.BOLD, 40);
 			g2.setFont(font);
 			FontRenderContext frc = g2.getFontRenderContext();
 			GlyphVector gv = null;
-			if(frame.isDefaultKeys() == 1)
-				gv = font.createGlyphVector(frc, s[0]);
-			else
-				gv = font.createGlyphVector(frc, s[1]);
-			Shape glyph = gv.getOutline(tutorialX+30,310);
+			gv = font.createGlyphVector(frc, s);
+			Shape glyph = gv.getOutline(tutorialX+30,315);
 			g2.setColor(new Color(220,220,220,255));
 			
 			g2.fill(glyph);
@@ -127,7 +127,7 @@ public class L1M2 extends GameLevel implements ActionListener
 	@Override
 	public void enter()
 	{
-		if(tutorialEnd)
+		if(tutorialEnd && tutorialX < 20)
 		{
 			tutorialMoved = true;
 		}

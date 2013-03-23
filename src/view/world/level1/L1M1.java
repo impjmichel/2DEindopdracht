@@ -19,6 +19,7 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import view.AdvancedControlPanel;
 import view.GameFrame;
 import view.world.GameHero;
 import view.world.GameLevel;
@@ -35,7 +36,8 @@ public class L1M1 extends GameLevel implements ActionListener
 	private boolean tutorialEnd = false;
 	private boolean tutorialMoved = false;
 	private int tutorialX = 920;
-	private final String[] s = {"Move left and right with the arrow keys","Move left and right with 'A' and 'D'"};
+	private String[] s;
+	
 	
 	public L1M1(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -69,6 +71,12 @@ public class L1M1 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);
+		
+		AdvancedControlPanel p = new AdvancedControlPanel(world, frame);
+		String str = p.getKeyString(frame.getLeftKey());
+		String str2 = p.getKeyString(frame.getRightKey());
+		String[] s2 = {"Move to the left with "+str,"and to the right with "+str2};
+		s = s2;
 	}
 	
 	public void paintComponent(Graphics g)
@@ -95,17 +103,16 @@ public class L1M1 extends GameLevel implements ActionListener
 			Font font = new Font("Serif", Font.BOLD, 50);
 			g2.setFont(font);
 			FontRenderContext frc = g2.getFontRenderContext();
-			GlyphVector gv = null;
-			if(frame.isDefaultKeys() == 1)
-				gv = font.createGlyphVector(frc, s[0]);
-			else
-				gv = font.createGlyphVector(frc, s[1]);
-			Shape glyph = gv.getOutline(tutorialX+30,310);
+			GlyphVector gv = font.createGlyphVector(frc, s[0]);
+			Shape glyph = gv.getOutline(tutorialX+30,280);
+			GlyphVector gv2 = font.createGlyphVector(frc, s[1]);
+			Shape glyph2 = gv2.getOutline(tutorialX+30,340);
 			g2.setColor(new Color(220,220,220,255));
-			
 			g2.fill(glyph);
+			g2.fill(glyph2);
 			g2.setColor(new Color(0,0,0,255));
 			g2.draw(glyph);
+			g2.draw(glyph2);
 		}
 	}
 
@@ -116,10 +123,8 @@ public class L1M1 extends GameLevel implements ActionListener
 	{
 		Vector2f left = new Vector2f(-1000000,0);
 		hero.move(left);
-		if(tutorialEnd)
-		{
+		if(tutorialEnd && tutorialX < 20)
 			tutorialMoved = true;
-		}
 	}
 
 	@Override
@@ -127,10 +132,8 @@ public class L1M1 extends GameLevel implements ActionListener
 	{
 		Vector2f right = new Vector2f(1000000,0);
 		hero.move(right);
-		if(tutorialEnd)
-		{
+		if(tutorialEnd && tutorialX < 20)
 			tutorialMoved = true;
-		}
 	}
 
 	@Override

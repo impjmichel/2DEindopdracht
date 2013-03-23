@@ -91,10 +91,10 @@ public class MenuPanel extends GameLevel implements ActionListener
 		{
 			case 0:
 				world.time.start();
-				frame.loadMap(new L1M1(world,frame, new Vector2f(300f,320)));
+				frame.loadMap(new L1M1(world,frame, new Vector2f(400f,320)));
 				break;
 			case 1:
-				frame.loadMap(new ControlPanel(world,frame));
+				frame.loadMap(new AdvancedControlPanel(world,frame));
 				break;
 			case 2:
 				System.exit(0);

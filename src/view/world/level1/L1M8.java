@@ -254,7 +254,7 @@ public class L1M8 extends GameLevel implements ActionListener
 		repaint();
 		if(hero2D.getPosition().getX() > 900)
 			frame.loadMap(new L1M7(world,frame,new Vector2f(10f,world.getY())));
-//		else if(hero2D.getPosition().getY() < 0)
-//			frame.loadMap(new L1M9(world,frame, new Vector2f(world.getX(),590)));
+		else if(hero2D.getPosition().getY() < 0)
+			frame.loadMap(new L1M9(world,frame, new Vector2f(world.getX(),590)));
 	}
 }

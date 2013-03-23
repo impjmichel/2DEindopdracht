@@ -23,6 +23,7 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import view.AdvancedControlPanel;
 import view.GameFrame;
 import view.world.GameHero;
 import view.world.GameLevel;
@@ -47,10 +48,11 @@ public class L1M3 extends GameLevel implements ActionListener
 	private int gsX, gsY, gcX, gcY, catchX, catchY, frameCounter;
 	private boolean flying, changing;
 	private final String[] s = {"Congratulations","Congratulations...","You have obtained a gravity suit.",
-			"Press up or down to use its functionality.","Press 'W' or 'S' to use its functionality.",
+			"","",
 			"...","Please move on so we can start the testing.","At the end of the course there will be cake.",
 			"...","I just heard one of the testsubjects escaped...","with the cake.",
 			"I will see to it that you will be equivalently","rewarded in pies."};
+	private String str,str2;
 
 	
 	public L1M3(GameWorld world, GameFrame frame, Vector2f position)
@@ -139,6 +141,10 @@ public class L1M3 extends GameLevel implements ActionListener
 		{
 			e.printStackTrace();
 		}
+		AdvancedControlPanel p = new AdvancedControlPanel(world, frame);
+		str = p.getKeyString(frame.getSwitchKey());
+		str = "Press "+str+" to use its functionality.";
+		str2 = "Or UP, or DOWN, those three do fine.";
 	}
 	
 	public void paintComponent(Graphics g)
@@ -202,14 +208,12 @@ public class L1M3 extends GameLevel implements ActionListener
 			else if(tutorialMoved == 3)
 				gv = font.createGlyphVector(frc, s[2]);
 			else if(tutorialMoved == 4)
-				if(frame.isDefaultKeys() == 1)
-					gv = font.createGlyphVector(frc, s[3]);
-				else
-					gv = font.createGlyphVector(frc, s[4]);
-			else if(tutorialMoved == 5)
 			{
-				gv = font.createGlyphVector(frc, s[5]);
+				gv = font.createGlyphVector(frc, str);
+				gv2 = font.createGlyphVector(frc, str2);
 			}
+			else if(tutorialMoved == 5)
+				gv = font.createGlyphVector(frc, s[5]);
 			else if(tutorialMoved == 6)
 				gv = font.createGlyphVector(frc, s[6]);
 			else if(tutorialMoved == 7)
@@ -372,5 +376,4 @@ public class L1M3 extends GameLevel implements ActionListener
 		else if(hero2D.getPosition().getX()>900)
 			frame.loadMap(new L1M4(world,frame,new Vector2f(10f,world.getY())));
 	}
-	
 }

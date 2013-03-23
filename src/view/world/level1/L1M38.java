@@ -5,13 +5,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
@@ -29,13 +33,14 @@ public class L1M38 extends GameLevel implements ActionListener
 	private static final long	serialVersionUID	= 1L;
 	private World world2D;
 	private Timer timer;
-	private Body floor,wall1,wall2,roof1,roof2,hero2D;
+	private Body floor,wall1,wall2,roof1,roof2,hero2D,cakeBox;
 	private GameHero hero;
 	private boolean levelEnd;
 	private boolean endingEnded = false;
 	private int endingMoved = 0;
 	private int endingX = 920;
 	private String[] s;
+	private Image cake;
 	
 	
 	public L1M38(GameWorld world, GameFrame frame, Vector2f position)
@@ -60,6 +65,11 @@ public class L1M38 extends GameLevel implements ActionListener
 		floor = new StaticBody("", new Box(720f,40f));
 		floor.setPosition(350f, 400);
 		
+		cakeBox = new Body("cake", new Box(80,59), 10);
+		cakeBox.setPosition(500, 250);
+		cakeBox.adjustRotation((float)Math.PI/6);
+		world2D.add(cakeBox);
+		
 		world2D.add(floor);
 		world2D.add(roof1);
 		world2D.add(roof2);
@@ -70,6 +80,13 @@ public class L1M38 extends GameLevel implements ActionListener
 		hero2D = hero.getHeroBody();
 		hero2D.setPosition(position.x, position.y);
 		world2D.add(hero2D);
+		try
+		{
+			cake = ImageIO.read(L1M38.class.getResource("/cake.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void paintComponent(Graphics g)
@@ -84,6 +101,19 @@ public class L1M38 extends GameLevel implements ActionListener
 		drawBox(g2, floor);
 		drawBox(g2, roof1);
 		drawBox(g2, roof2);
+		
+		Box box = (Box) cakeBox.getShape();
+		Vector2f[] pts = box.getPoints(cakeBox.getPosition(), cakeBox.getRotation());
+
+		Vector2f p1 = pts[0];
+
+		if(cake != null)
+		{
+			AffineTransform tr = new AffineTransform();
+			tr.translate(p1.x, p1.y);
+			tr.rotate(cakeBox.getRotation(), 0, 0);
+			g2.drawImage(cake, tr, null);
+		}
 		
 		hero.drawHero(g2);
 		

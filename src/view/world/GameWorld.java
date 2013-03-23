@@ -49,8 +49,8 @@ public class GameWorld implements ActionListener
 		deaths = 0;
 		closedL1M2 = true;
 		closedL1M3 = true;
-		closedL1M20 = false;
-		closedL1M29 = false;
+		closedL1M20 = true;
+		closedL1M29 = true;
 		gameHints = 0;
 		saveSpot = 0;
 		dead = false;

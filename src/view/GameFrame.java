@@ -23,69 +23,56 @@ public class GameFrame extends JFrame implements KeyListener
 	private static final long	serialVersionUID	= 1L;
 	private GameLevel content;
 	private LoadScreen loading;
-	private int defaultKeys;
+	private int leftKey,rightKey,switchKey,enterKey,selectedKey;
+	private boolean keybinding = false;
 
 	public GameFrame(GameWorld world)
 	{
 		super("Gravity Control");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		defaultKeys = 1;
 		loading = new LoadScreen(world,this);
 		content = loading;
 		setFocusable(true);
 		addKeyListener(this);
 		requestFocus();
 		setContentPane(content);
+		leftKey = KeyEvent.VK_LEFT;
+		rightKey = KeyEvent.VK_RIGHT;
+		switchKey = KeyEvent.VK_Z;
+		enterKey = KeyEvent.VK_SPACE;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent ke)
 	{
-		if(defaultKeys==1)
+		if(!keybinding)
 		{
-			if(ke.getKeyCode() == KeyEvent.VK_DOWN)
-				content.down();
-			if(ke.getKeyCode() == KeyEvent.VK_UP)
+			if(ke.getKeyCode() == switchKey)
 				content.up();
-			if(ke.getKeyCode() == KeyEvent.VK_LEFT)
+			else if(ke.getKeyCode() == leftKey || ke.getKeyCode() == KeyEvent.VK_LEFT)
 				content.left();
-			if(ke.getKeyCode() == KeyEvent.VK_RIGHT)
+			else if(ke.getKeyCode() == rightKey || ke.getKeyCode() == KeyEvent.VK_RIGHT)
 				content.right();
+			else if(ke.getKeyCode() == KeyEvent.VK_UP)
+				content.up();
+			else if(ke.getKeyCode() == KeyEvent.VK_DOWN)
+				content.down();
 		}
 		else
 		{
-			if(ke.getKeyCode() == KeyEvent.VK_S)
-				content.down();
-			if(ke.getKeyCode() == KeyEvent.VK_W)
-				content.up();
-			if(ke.getKeyCode() == KeyEvent.VK_A)
-				content.left();
-			if(ke.getKeyCode() == KeyEvent.VK_D)
-				content.right();	
+			changeKey(ke.getKeyCode());
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent ke)
 	{
-		if(defaultKeys==1)
-		{
-			if(ke.getKeyCode() == KeyEvent.VK_SPACE)
-			{
-				content.enter();
-			}
-		}
-		else
-		{
-			if(ke.getKeyCode() == KeyEvent.VK_ENTER)
-			{
-				content.enter();
-			}
-		}
-		if(ke.getKeyCode() == KeyEvent.VK_ESCAPE)
-		{
+		if(ke.getKeyCode() == KeyEvent.VK_ENTER)
+			content.enter();
+		else if(ke.getKeyCode() == enterKey)
+			content.enter();
+		else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE)
 			content.escape();
-		}
 	}
 
 	@Override
@@ -102,17 +89,129 @@ public class GameFrame extends JFrame implements KeyListener
 		validate();
 		repaint();
 	}
+
+	public int getLeftKey()
+	{
+		return leftKey;
+	}
+
+	public void setLeftKey(int leftKey)
+	{
+		this.leftKey = leftKey;
+	}
+
+	public int getRightKey()
+	{
+		return rightKey;
+	}
+
+	public void setRightKey(int rightKey)
+	{
+		this.rightKey = rightKey;
+	}
+
+	public int getSwitchKey()
+	{
+		return switchKey;
+	}
+
+	public void setSwitchKey(int switchKey)
+	{
+		this.switchKey = switchKey;
+	}
+
+	public int getEnterKey()
+	{
+		return enterKey;
+	}
+
+	public void setEnterKey(int enterKey)
+	{
+		this.enterKey = enterKey;
+	}
 	
-	public void setDefaultKeys(int defaultKeys)
+	public boolean isKeybinding()
 	{
-		this.defaultKeys = defaultKeys;
+		return keybinding;
 	}
 
-	public int isDefaultKeys()
+	public int getSelectedKey()
 	{
-		return defaultKeys;
+		return selectedKey;
 	}
 
+	public void setSelectedKey(int selectedKey)
+	{
+		this.selectedKey = selectedKey;
+	}
+
+	public void setKeybinding(boolean keybinding)
+	{
+		this.keybinding = keybinding;
+	}
+	
+	public void changeKey(int keyCode)
+	{
+		if(keyCode != KeyEvent.VK_ESCAPE)
+		{
+			switch(selectedKey)
+			{
+			case 0: // do nothing
+				break;
+			case 1: //left
+				if(keyCode != KeyEvent.VK_RIGHT && keyCode != KeyEvent.VK_DOWN && keyCode != KeyEvent.VK_ENTER)
+				{
+					leftKey = keyCode;
+					if(keyCode == rightKey)
+						rightKey = KeyEvent.VK_RIGHT;
+					if(keyCode == switchKey)
+						switchKey = KeyEvent.VK_DOWN;
+					if(keyCode == enterKey)
+						enterKey = KeyEvent.VK_ENTER;
+				}
+				break;
+			case 2: //right
+				if(keyCode != KeyEvent.VK_LEFT && keyCode != KeyEvent.VK_DOWN && keyCode != KeyEvent.VK_ENTER)
+				{
+					rightKey = keyCode;
+					if(keyCode == leftKey)
+						leftKey = KeyEvent.VK_LEFT;
+					if(keyCode == switchKey)
+						switchKey = KeyEvent.VK_DOWN;
+					if(keyCode == enterKey)
+						enterKey = KeyEvent.VK_ENTER;
+				}
+				break;
+			case 3: //switch
+				if(keyCode != KeyEvent.VK_LEFT && keyCode != KeyEvent.VK_RIGHT && keyCode != KeyEvent.VK_ENTER)
+				{
+					switchKey = keyCode;
+					if(keyCode == leftKey)
+						leftKey = KeyEvent.VK_LEFT;
+					if(keyCode == rightKey)
+						rightKey = KeyEvent.VK_RIGHT;
+					if(keyCode == enterKey)
+						enterKey = KeyEvent.VK_ENTER;
+				}
+				break;
+			case 4: //enter
+				if(keyCode != KeyEvent.VK_LEFT && keyCode != KeyEvent.VK_RIGHT && keyCode != KeyEvent.VK_DOWN)
+				{
+					enterKey = keyCode;
+					if(keyCode == leftKey)
+						leftKey = KeyEvent.VK_LEFT;
+					if(keyCode == rightKey)
+						rightKey = KeyEvent.VK_RIGHT;
+					if(keyCode == switchKey)
+						switchKey = KeyEvent.VK_DOWN;
+				}
+				break;
+			}
+			selectedKey = 0;
+			keybinding = false;
+		}
+	}
+	
 	private class LoadScreen extends GameLevel implements ActionListener
 	{
 		private static final long	serialVersionUID	= 1L;
@@ -178,6 +277,7 @@ public class GameFrame extends JFrame implements KeyListener
 		@Override
 		public void actionPerformed(ActionEvent arg0)
 		{
+			this.requestFocus();
 			update();
 		}
 		

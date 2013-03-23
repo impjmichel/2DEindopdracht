@@ -42,7 +42,7 @@ public class L1M6 extends GameLevel implements ActionListener
 	private int deadCounter,imgX,imgY;
 	private boolean gettingUp;
 	private Image portal,portalBG,portalBG2;
-	private final String[] s = {"","You just activated a so called...","\"Organic Matrix Reproduction Unit\".","Most likely you wouldn't understand it.",""};
+	private final String[] s = {"You just activated a so called...","\"Organic Matrix Reproduction Unit\".","Most likely you wouldn't understand it.",""};
 	private boolean tutorial = false;
 	private boolean tutorialEnd = false;
 	private int tutorialMoved = 0;
@@ -217,8 +217,6 @@ public class L1M6 extends GameLevel implements ActionListener
 				gv = font.createGlyphVector(frc, s[2]);
 			else if(tutorialMoved == 4)
 				gv = font.createGlyphVector(frc, s[3]);
-			else if(tutorialMoved == 5)
-				gv = font.createGlyphVector(frc, s[4]);
 
 			Shape glyph = gv.getOutline(35,310);
 			g2.setColor(new Color(220,220,220,255));
