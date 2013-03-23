@@ -28,10 +28,12 @@ public class GameFrame extends JFrame implements KeyListener
 	private LoadScreen loading;
 	private int leftKey,rightKey,switchKey,enterKey,selectedKey;
 	private boolean keybinding = false;
+	private GameWorld world;
 
 	public GameFrame(GameWorld world)
 	{
 		super("Gravity Control");
+		this.world = world;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		loading = new LoadScreen(world,this);
 		content = loading;
@@ -43,7 +45,6 @@ public class GameFrame extends JFrame implements KeyListener
 		rightKey = KeyEvent.VK_RIGHT;
 		switchKey = KeyEvent.VK_Z;
 		enterKey = KeyEvent.VK_SPACE;
-		previousMap = new L1M1(world,this, new Vector2f(400f,320));
 	}
 
 	@Override
@@ -53,9 +54,9 @@ public class GameFrame extends JFrame implements KeyListener
 		{
 			if(ke.getKeyCode() == switchKey)
 				content.up();
-			else if(ke.getKeyCode() == leftKey || ke.getKeyCode() == KeyEvent.VK_LEFT)
+			else if(ke.getKeyCode() == leftKey)
 				content.left();
-			else if(ke.getKeyCode() == rightKey || ke.getKeyCode() == KeyEvent.VK_RIGHT)
+			else if(ke.getKeyCode() == rightKey)
 				content.right();
 			else if(ke.getKeyCode() == KeyEvent.VK_UP)
 				content.up();
@@ -63,9 +64,7 @@ public class GameFrame extends JFrame implements KeyListener
 				content.down();
 		}
 		else
-		{
 			changeKey(ke.getKeyCode());
-		}
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class GameFrame extends JFrame implements KeyListener
 		if(!content.getClass().equals(MenuPanel.class) &&
 		   !content.getClass().equals(AdvancedControlPanel.class) &&
 		   !content.getClass().equals(LoadScreen.class))
-			previousMap = content;
+				previousMap = content;
 		content.stop();
 		content = map;
 		setContentPane(content);
@@ -222,6 +221,8 @@ public class GameFrame extends JFrame implements KeyListener
 	
 	public GameLevel getPreviousMap()
 	{
+		if(previousMap == null)
+			previousMap = new L1M1(world,this, new Vector2f(400f,320));	
 		return previousMap;
 	}
 
