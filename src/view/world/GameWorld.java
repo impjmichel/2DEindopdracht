@@ -8,12 +8,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.swing.Timer;
 
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.World;
 import net.phys2d.raw.strategies.QuadSpaceStrategy;
 import view.GameFrame;
+import view.world.level1.L1M13;
 import view.world.level1.L1M3;
 import view.world.level1.L1M36;
 import view.world.level1.L1M6;
@@ -39,6 +41,7 @@ public class GameWorld implements ActionListener
     private AudioFormat format;
     private DataLine.Info info;
     private Clip clip;
+    private boolean audioMuted = false;
 
 	public GameWorld()
 	{
@@ -98,7 +101,7 @@ public class GameWorld implements ActionListener
 			break;
 		case 2: frame.loadMap(new L1M8(this,frame,new Vector2f(120,500)));
 			break;
-		case 3: // L1 M18
+		case 3: frame.loadMap(new L1M13(this,frame,new Vector2f(680,300)));
 			break;
 		case 4: frame.loadMap(new L1M36(this,frame,new Vector2f(425,300)));
 			break;
@@ -235,11 +238,13 @@ public class GameWorld implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		timePlayed++;
-		if(!clip.isActive() && gravitySuit)
+		if(!clip.isActive() && gravitySuit && !audioMuted)
 		{
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
+		if(clip.isActive() && audioMuted)
+			clip.stop();
 	}
 	
 	public String slashPlayed()
@@ -276,5 +281,21 @@ public class GameWorld implements ActionListener
 	public int getDeathCount()
 	{
 		return deaths;
+	}
+
+	public boolean isAudioMuted()
+	{
+		return audioMuted;
+	}
+
+	public void setAudioMuted(boolean audioMuted)
+	{
+		this.audioMuted = audioMuted;
+	}
+	
+	public void setVolume(float amount)
+	{
+		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		volume.setValue(amount);
 	}
 }

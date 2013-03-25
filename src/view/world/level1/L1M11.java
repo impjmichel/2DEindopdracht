@@ -191,10 +191,7 @@ public class L1M11 extends GameLevel implements ActionListener
 		if(x > 650 && x < 750)
 		{
 			if(y > 450 && y < 580)
-			{
 				world.setClosedL1M20(false);
-				world.setClosedL1M29(false);
-			}
 		}
 	}
 
