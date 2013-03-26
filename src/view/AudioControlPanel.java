@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -70,7 +71,7 @@ public class AudioControlPanel extends GameLevel implements ActionListener
 		GlyphVector gv = font.createGlyphVector(frc, s[0]);
 		Shape glyph = gv.getOutline(350,130);
 		g2.draw(glyph);
-		String[] str = {"<< "+world.getVolumeInPerCent()+" >>","no sounds"};
+		String[] str = {"<< "+world.getVolumeInPerCent()+" >>","no effects"};
 		for(int i = 0; i < 2; i++)
 		{
 			gv = font.createGlyphVector(frc, s[i+1]);
@@ -86,6 +87,12 @@ public class AudioControlPanel extends GameLevel implements ActionListener
 		gv = font.createGlyphVector(frc, s[3]);
 		glyph = gv.getOutline(400,370);
 		g2.draw(glyph);
+		
+		
+		g2.setStroke(new BasicStroke(3));
+		g2.drawLine(230, 281, 670, 281);
+		g2.drawLine(230, 292, 670, 292);
+		g2.drawLine(230, 303, 670, 303);
 	}
 
 	@Override
