@@ -139,7 +139,7 @@ public class L1M36 extends GameLevel implements ActionListener
 		}
 		else
 		{
-			if(deadCounter%13 == 0)
+			if(deadCounter%4 == 0)
 			{
 				imgX = (imgX+1)%5;
 				if(imgX == 0)
@@ -155,16 +155,14 @@ public class L1M36 extends GameLevel implements ActionListener
 		if(gettingUp)
 		{
 			imgY = 3;
-			if(deadCounter%35 == 34)
+			if(deadCounter%20 == 19)
 				imgX++;
 			if(imgX == 2)
 				world.setDead(false);
 			if(imgX == 4)
 				gettingUp = false;
 		}
-		
 		repaint();
-		
 		if(hero2D.getPosition().getX()<0)
 			frame.loadMap(new L1M35(world,frame,new Vector2f(890,world.getY())));
 		else if(hero2D.getPosition().getX()>900)

@@ -297,7 +297,7 @@ public class L1M6 extends GameLevel implements ActionListener
 		}
 		else
 		{
-			if(deadCounter%8 == 0)
+			if(deadCounter%4 == 0)
 			{
 				imgX = (imgX+1)%5;
 				if(imgX == 0)
@@ -313,7 +313,7 @@ public class L1M6 extends GameLevel implements ActionListener
 		if(gettingUp)
 		{
 			imgY = 3;
-			if(deadCounter%25 == 24)
+			if(deadCounter%20 == 19)
 				imgX++;
 			if(imgX == 2)
 				world.setDead(false);

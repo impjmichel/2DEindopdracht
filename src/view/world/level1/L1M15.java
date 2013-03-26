@@ -113,6 +113,12 @@ public class L1M15 extends GameLevel implements ActionListener
 		drawBox(g2, wall);
 		drawBox(g2, wall2);
 		
+		if(pcImage != null)
+		{
+			BufferedImage subImg = ((BufferedImage) pcImage).getSubimage(pcX*93, 0, 93, 94);
+			g2.drawImage(subImg, 680, 360, 80, 80, null);
+		}
+		
 		hero.drawHero(g2);
 		//-------PROGRESS-KILLER----------------------------
 		if(spikes.size() > 0)
@@ -137,12 +143,6 @@ public class L1M15 extends GameLevel implements ActionListener
 		for(int i = 0; i < 20; i++)
 			g2.drawString(s[i], 0, 0+60*i);
 		//-------PROGRESS-KILLER----------------------------
-		
-		if(pcImage != null)
-		{
-			BufferedImage subImg = ((BufferedImage) pcImage).getSubimage(pcX*93, 0, 93, 94);
-			g2.drawImage(subImg, 680, 360, 80, 80, null);
-		}
 	}
 
 	@Override

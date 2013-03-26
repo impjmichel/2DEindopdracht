@@ -25,7 +25,7 @@ public class GameSimulator implements ActionListener
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		waitTime = (int) (100*Math.random());
+		waitTime = (int) (70*Math.random());
 		timer = new Timer(1000/60, this);
 		timer.start();
 	}

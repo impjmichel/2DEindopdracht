@@ -83,8 +83,11 @@ public class L1M8 extends GameLevel implements ActionListener
 		wall5.setPosition(720f, 30);
 		wall6 = new StaticBody("", new Box(40f,79f));
 		wall6.setPosition(230, 430);
-
-		enemy1 = new GameMovingEnemy(new Vector2f(305,330), new Vector2f(305,510),90,80,2, world);
+		
+		float speed = 2;
+		if(!world.isClosedL1M29())
+			speed = 1;
+		enemy1 = new GameMovingEnemy(new Vector2f(305,330), new Vector2f(305,510),90,80,speed, world);
 		world2D.add(enemy1.getBody());
 		
 		spikes = new ArrayList<GameSpike>();
@@ -227,7 +230,7 @@ public class L1M8 extends GameLevel implements ActionListener
 		}
 		else
 		{
-			if(deadCounter%8 == 0)
+			if(deadCounter%4 == 0)
 			{
 				imgX = (imgX+1)%5;
 				if(imgX == 0)
@@ -243,7 +246,7 @@ public class L1M8 extends GameLevel implements ActionListener
 		if(gettingUp)
 		{
 			imgY = 3;
-			if(deadCounter%25 == 24)
+			if(deadCounter%20 == 19)
 				imgX++;
 			if(imgX == 2)
 				world.setDead(false);

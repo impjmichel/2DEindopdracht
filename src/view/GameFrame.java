@@ -86,6 +86,7 @@ public class GameFrame extends JFrame implements KeyListener
 	{
 		if(!content.getClass().equals(MenuPanel.class) &&
 		   !content.getClass().equals(AdvancedControlPanel.class) &&
+		   !content.getClass().equals(AudioControlPanel.class) &&
 		   !content.getClass().equals(LoadScreen.class))
 				previousMap = content;
 		content.stop();
@@ -250,7 +251,7 @@ public class GameFrame extends JFrame implements KeyListener
 			for(int i = 0; i < 8; i++)
 			{
 				g2.setColor(new Color(0,0,0,25*i+25));
-				Ellipse2D ball = new Ellipse2D.Double(-15, -15, 10, 10);
+				Ellipse2D ball = new Ellipse2D.Double(-17, -17, 10, 10);
 				AffineTransform tr = new AffineTransform();
 				tr.rotate(direction+i*(2*Math.PI/8),0,0);
 				g2.fill(tr.createTransformedShape(ball));

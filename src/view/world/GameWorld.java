@@ -42,6 +42,8 @@ public class GameWorld implements ActionListener
     private DataLine.Info info;
     private Clip clip;
     private boolean audioMuted = false;
+    private float volume;
+    private FloatControl volumeControl;
 
 	public GameWorld()
 	{
@@ -66,6 +68,7 @@ public class GameWorld implements ActionListener
 		    info = new DataLine.Info(Clip.class, format);
 		    clip = (Clip) AudioSystem.getLine(info);
 		    clip.open(stream);
+		    volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		}
 		catch (Exception e) 
 		{
@@ -237,7 +240,17 @@ public class GameWorld implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		updateMusic();
 		timePlayed++;
+	}
+	
+	private void updateMusic()
+	{
+		if(getVolumeInPerCent() == 0)
+			audioMuted = true;
+		else
+			audioMuted = false;
+		volumeControl.setValue(volume);
 		if(!clip.isActive() && gravitySuit && !audioMuted)
 		{
 			clip.start();
@@ -292,10 +305,34 @@ public class GameWorld implements ActionListener
 	{
 		this.audioMuted = audioMuted;
 	}
-	
-	public void setVolume(float amount)
+
+	public int getVolumeInPerCent()
 	{
-		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volume.setValue(amount);
+		float volumePerCent = (volume + 54)*100/60;
+		return Math.round(volumePerCent);
+	}
+	
+	public void incrementVolume()
+	{
+		if(getVolumeInPerCent() < 100)
+		{
+			int newVolumePerCent = getVolumeInPerCent()+5;
+			setVolume((newVolumePerCent*60/100)-54);
+		}
+	}
+	
+	public void decreaseVolume()
+	{
+		if(getVolumeInPerCent() > 0)
+		{
+			int newVolumePerCent = getVolumeInPerCent()-5;
+			setVolume((newVolumePerCent*60/100)-54);
+		}
+	}
+
+	public void setVolume(float volume)
+	{
+		this.volume = volume;
+		updateMusic();
 	}
 }

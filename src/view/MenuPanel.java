@@ -23,7 +23,7 @@ public class MenuPanel extends GameLevel implements ActionListener
 {
 	private static final long	serialVersionUID	= 1L;
 	private ArrayList<Shape> shapes;
-	private static String[] s = {"Start","Controls","Exit"};
+	private static String[] s = {"Start","Controls","Audio","Exit"};
 	private int select, maxSelect;
 	private Timer timer;
 	
@@ -32,9 +32,9 @@ public class MenuPanel extends GameLevel implements ActionListener
 		super(world, frame);
 		setPreferredSize(new Dimension(900,600));
 		select = 0;
-		maxSelect = 3;
+		maxSelect = 4;
 		shapes = new ArrayList<Shape>();
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			Rectangle2D option = new Rectangle2D.Double(0, 0, 300, 60);
 			shapes.add(option);
@@ -95,6 +95,9 @@ public class MenuPanel extends GameLevel implements ActionListener
 				frame.loadMap(new AdvancedControlPanel(world,frame));
 				break;
 			case 2:
+				frame.loadMap(new AudioControlPanel(world,frame));
+				break;
+			case 3:
 				System.exit(0);
 				break;
 		}

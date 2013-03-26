@@ -206,9 +206,7 @@ public class L1M38 extends GameLevel implements ActionListener
 			{
 				endingX-= 25;
 				if(endingX < -930)
-				{
 					System.exit(0);
-				}
 			}
 		}
 	}
