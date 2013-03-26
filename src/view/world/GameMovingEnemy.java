@@ -1,6 +1,11 @@
 package view.world;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
@@ -14,6 +19,8 @@ public class GameMovingEnemy
 	private Body enemy;
 	private GameWorld world;
 	private float speed;
+	private double widthScale,heightScale;
+	private Image enemyImage;
 //	private double randImg;
 
 	public GameMovingEnemy(Vector2f startPosition, Vector2f endPosition, int width, int height, float speed, GameWorld world)
@@ -32,6 +39,13 @@ public class GameMovingEnemy
 		
 		//TODO implement once multiple images exist
 //		randImg = Math.random()*4;
+		try
+		{
+			enemyImage = ImageIO.read(GameMovingEnemy.class.getResource("/moving enemy.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public GameMovingEnemy(Vector2f startPosition, Vector2f endPosition, int width, int height, GameWorld world)
@@ -50,6 +64,13 @@ public class GameMovingEnemy
 		
 		//TODO implement once multiple images exist
 //		randImg = Math.random()*4;
+		try
+		{
+			enemyImage = ImageIO.read(GameMovingEnemy.class.getResource("/moving enemy.png"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public Body getBody()
@@ -108,12 +129,16 @@ public class GameMovingEnemy
 		Vector2f p1 = pts[0];
 		Vector2f p2 = pts[1];
 		Vector2f p3 = pts[2];
-		Vector2f p4 = pts[3];
 		
-		g2.drawLine((int) p1.x,(int) p1.y,(int) p2.x,(int) p2.y);
-		g2.drawLine((int) p2.x,(int) p2.y,(int) p3.x,(int) p3.y);
-		g2.drawLine((int) p3.x,(int) p3.y,(int) p4.x,(int) p4.y);
-		g2.drawLine((int) p4.x,(int) p4.y,(int) p1.x,(int) p1.y);
+		if(enemyImage != null)
+		{
+			widthScale = (p2.x-p1.x)/200;
+			heightScale = (p3.y-p1.y)/200;
+			AffineTransform tr = new AffineTransform();
+			tr.translate(p1.x, p1.y);
+			tr.scale(widthScale, heightScale);
+			g2.drawImage(enemyImage, tr, null);
+		}
 		
 		BodyList list = enemy.getTouching();
 		if(list.contains(world.getHero().getHeroBody()))
