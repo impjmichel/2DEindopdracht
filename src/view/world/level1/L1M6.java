@@ -284,7 +284,6 @@ public class L1M6 extends GameLevel implements ActionListener
 				}
 			}
 		}
-		
 		if(world.isDead() || gettingUp)
 			deadCounter++;
 		if(!world.isDead() && !tutorial)

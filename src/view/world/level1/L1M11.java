@@ -2,11 +2,16 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +43,12 @@ public class L1M11 extends GameLevel implements ActionListener
 	private Image pcImage;
 	private int pcX;
 	private int pcCounter;
+	private final String[] s = {">>You hear the faint sound of a door opening<<","Or that's what I would like to say,",
+								"but all our doors open and close behind you", "without any sound.",""};
+	private boolean tutorial = false;
+	private boolean tutorialEnd = false;
+	private int tutorialMoved = 0;
+	private int tutorialX = 920;
 	
 	public L1M11(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -181,17 +192,57 @@ public class L1M11 extends GameLevel implements ActionListener
 			g2.drawImage(subImg, 680, 470, 80, 80, null);
 		}
 		hero.drawHero(g2);
+		if(tutorial)
+		{
+			g2.setStroke(new BasicStroke(1));
+			g2.setColor(new Color(0,0,0,180));
+			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
+			g2.setColor(new Color(200,200,200,255));
+			Font font = new Font("Monospaced", Font.BOLD, 30);
+			g2.setFont(font);
+			FontRenderContext frc = g2.getFontRenderContext();
+			GlyphVector gv = font.createGlyphVector(frc, "");
+			GlyphVector gv2 = font.createGlyphVector(frc, "");
+			if(tutorialMoved == 1)
+				gv = font.createGlyphVector(frc, s[0]);
+			else if(tutorialMoved == 2)
+				gv = font.createGlyphVector(frc, s[1]);
+			else if(tutorialMoved == 3)
+			{
+				gv = font.createGlyphVector(frc, s[2]);
+				gv2 = font.createGlyphVector(frc, s[3]);
+			}
+			else if(tutorialMoved == 4)
+				gv = font.createGlyphVector(frc, s[4]);
+			Shape glyph = gv.getOutline(35,310);
+			Shape glyph2 = gv2.getOutline(35,345);
+			g2.setColor(new Color(220,220,220,255));
+			g2.fill(glyph);
+			g2.fill(glyph2);
+			g2.setColor(new Color(0,0,0,255));
+			g2.draw(glyph);
+			g2.draw(glyph2);
+		}
 	}
 
 	@Override
 	public void enter()
 	{
+		if(tutorialEnd && hero.isPaused())
+		{
+			if(tutorialX > -10)
+				tutorialMoved ++;
+		}
 		int x = (int) hero2D.getPosition().getX();
 		int y = (int) hero2D.getPosition().getY();
 		if(x > 650 && x < 750)
 		{
 			if(y > 450 && y < 580)
+			{
 				world.setClosedL1M20(false);
+				if(world.getGameHints() == 8)
+					world.setGameHints(9);
+			}
 		}
 	}
 
@@ -210,13 +261,38 @@ public class L1M11 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		if(world.getGameHints() == 9)
+		{
+			tutorial = true;
+			hero.setPaused(true);
+			if(tutorialX  > 0)
+			{
+				tutorialX -= 25;
+				tutorialEnd = true;
+			}
+			if(tutorialMoved > 0)
+				tutorialEnd = true;
+			if(tutorialMoved == 5)
+			{
+				tutorialX-= 25;
+				if(tutorialX < -930)
+				{
+					world.setGameHints(10);
+					tutorial = false;
+					hero.setPaused(false);
+				}
+			}
+		}
 		pcCounter = (pcCounter+1)%5;
 		if(pcCounter == 4 && world.isClosedL1M20())
 			pcX = (pcX+1)%4;
-		for(int i=0; i<5; i++) 
+		if(!tutorial)
 		{
-			world2D.step();
-			validate();
+			for(int i=0; i<5; i++) 
+			{
+				world2D.step();
+				validate();
+			}
 		}
 		repaint();
 		if(hero2D.getPosition().getX()>900)

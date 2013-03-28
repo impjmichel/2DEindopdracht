@@ -106,6 +106,7 @@ public abstract class GameLevel extends JPanel
 			g2.setFont(font);
 			g2.drawString(world.slashPlayed(), 730, 20);
 			g2.drawString(world.getDeaths(), 0, 20);
+			g2.drawString(world.closedDoors(), 0, 610);
 		}
 	}
 }

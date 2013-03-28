@@ -2,12 +2,17 @@ package view.world.level1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -34,6 +39,11 @@ public class L1M36 extends GameLevel implements ActionListener
 	private int deadCounter,imgX,imgY;
 	private boolean gettingUp;
 	private Image portal,portalBG,portalBG2;
+	private final String[] s = {"You just activated a so called...","\"Organic Matrix Reproduction Unit\".","Most likely you wouldn't understand it.",""};
+	private boolean tutorial = false;
+	private boolean tutorialEnd = false;
+	private int tutorialMoved = 0;
+	private int tutorialX = 920;
 	
 	public L1M36(GameWorld world, GameFrame frame, Vector2f position)
 	{
@@ -103,13 +113,49 @@ public class L1M36 extends GameLevel implements ActionListener
 		}
 		if(!world.isDead())
 			hero.drawHero(g2);
+		if(tutorial)
+		{
+			g2.setStroke(new BasicStroke(1));
+			g2.setColor(new Color(0,0,0,180));
+			g2.fill(new Rectangle2D.Double(tutorialX,200,920,200));
+			g2.setColor(new Color(200,200,200,255));
+			Font font = new Font("Monospaced", Font.BOLD, 30);
+			g2.setFont(font);
+			FontRenderContext frc = g2.getFontRenderContext();
+			GlyphVector gv = font.createGlyphVector(frc, "");
+			if(tutorialMoved == 1)
+				gv = font.createGlyphVector(frc, s[0]);
+			else if(tutorialMoved == 2)
+				gv = font.createGlyphVector(frc, s[1]);
+			else if(tutorialMoved == 3)
+				gv = font.createGlyphVector(frc, s[2]);
+			else if(tutorialMoved == 4)
+				gv = font.createGlyphVector(frc, s[3]);
+
+			Shape glyph = gv.getOutline(35,310);
+			g2.setColor(new Color(220,220,220,255));
+			g2.fill(glyph);
+			g2.setColor(new Color(0,0,0,255));
+			g2.draw(glyph);
+		}
 	}
 
 	@Override
 	public void enter()
 	{
+		if(tutorialEnd && hero.isPaused())
+		{
+			if(tutorialX > -10)
+				tutorialMoved ++;
+		}
 		if(world.getX() > 380 && world.getX() < 520)
+		{
 			world.setSaveSpot(4);
+			if(world.getGameHints() == 6)
+			{
+				world.setGameHints(7);
+			}
+		}
 	}
 
 	@Override
@@ -127,9 +173,31 @@ public class L1M36 extends GameLevel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		if(world.getGameHints() == 7)
+		{
+			tutorial = true;
+			hero.setPaused(true);
+			if(tutorialX  > 0)
+			{
+				tutorialX -= 25;
+				tutorialEnd = true;
+			}
+			if(tutorialMoved > 0)
+				tutorialEnd = true;
+			if(tutorialMoved == 5)
+			{
+				tutorialX-= 25;
+				if(tutorialX < -930)
+				{
+					world.setGameHints(8);
+					tutorial = false;
+					hero.setPaused(false);
+				}
+			}
+		}
 		if(world.isDead() || gettingUp)
 			deadCounter++;
-		if(!world.isDead())
+		if(!world.isDead() && !tutorial)
 		{
 			for(int i=0; i<5; i++) 
 			{

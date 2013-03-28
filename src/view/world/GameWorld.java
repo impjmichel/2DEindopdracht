@@ -291,6 +291,23 @@ public class GameWorld implements ActionListener
 		return s;
 	}
 	
+	public String closedDoors()
+	{
+		int doors = 0;
+		if(closedL1M2)
+			doors++;
+		if(closedL1M3)
+			doors++;
+		if(closedL1M20)
+			doors++;
+		if(closedL1M29)
+			doors++;
+		if(doors == 0)
+			return "cleared";
+		else
+			return ""+doors;
+	}
+	
 	public int getDeathCount()
 	{
 		return deaths;
