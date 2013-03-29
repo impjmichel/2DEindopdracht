@@ -44,7 +44,7 @@ public class L1M11 extends GameLevel implements ActionListener
 	private int pcX;
 	private int pcCounter;
 	private final String[] s = {">>You hear the faint sound of a door opening<<","Or that's what I would like to say,",
-								"but all our doors open and close behind you", "without any sound.",""};
+								"but all our doors open and close behind you", "without any noise.",""};
 	private boolean tutorial = false;
 	private boolean tutorialEnd = false;
 	private int tutorialMoved = 0;
